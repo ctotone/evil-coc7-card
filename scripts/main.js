@@ -5,6 +5,7 @@ const DAMAGE_CARD_TYPE = "CoC7ChatDamage";
 const RANGED_CARD_TYPE = "CoC7ChatCombatRanged";
 const OPPOSED_CARD_TYPE = "CoC7ChatOpposedMessage";
 const COMBINED_CARD_TYPE = "CoC7ChatCombinedMessage";
+const CON_CHECK_CARD_TYPE = "CoC7ConCheck";
 const MELEE_INITIATOR = 0;
 const MELEE_TARGET = 1;
 
@@ -60,15 +61,27 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   try {
     if (game.system.id !== "CoC7") return;
 
-    const load = message.flags?.CoC7?.load;
+    const load = message.flags?.CoC7?.load ?? {};
     const content = html.querySelector(".message-content");
-    if (!load || !content) return;
+    if (!content) return;
 
     if (load.as === STANDARD_CARD_TYPE && !load.isStandby) {
       const rolls = [...content.querySelectorAll(".dice-roll")];
       if (!rolls.length) return;
 
       decorateStandardRollMessage(message, html, content, rolls);
+      return;
+    }
+
+    if (load.as === CON_CHECK_CARD_TYPE) {
+      const rolls = [...content.querySelectorAll(".dice-roll")];
+
+      if (rolls.length) {
+        decorateConCheckMessage(message, html, content, rolls);
+        return;
+      }
+
+      decorateGenericChatMessage(message, html, content);
       return;
     }
 
@@ -182,8 +195,42 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
         )
       ) {
         decorateMeleeTargetPreparationMessage(message, html, content);
+        return;
       }
     }
+
+    const specializedTypes = new Set([
+      STANDARD_CARD_TYPE,
+      COMBINED_CARD_TYPE,
+      OPPOSED_CARD_TYPE,
+      RANGED_CARD_TYPE,
+      MELEE_CARD_TYPE,
+      DAMAGE_CARD_TYPE
+    ]);
+
+    if (specializedTypes.has(load.as)) return;
+
+    const genericCheckRolls = [...content.querySelectorAll(".dice-roll")]
+      .filter((roll) =>
+        roll.querySelector(":scope > .dice-result > .dice-total")
+      );
+
+    if (
+      genericCheckRolls.length &&
+      isGenericCoC7CheckResult(content, genericCheckRolls)
+    ) {
+      decorateStandardRollMessage(
+        message,
+        html,
+        content,
+        genericCheckRolls,
+        getGenericCheckSummary(message, content)
+      );
+      html.classList.add("evil-coc7-generic-check-result");
+      return;
+    }
+
+    decorateGenericChatMessage(message, html, content);
   } catch (error) {
     console.warn(`${MODULE_ID} | Impossible de décorer une carte CoC7.`, error);
   }
@@ -191,6 +238,204 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 
 
 
+
+function decorateConCheckMessage(message, html, content, rolls) {
+  html.classList.remove(
+    "evil-coc7-generic-card",
+    "evil-coc7-generic-public",
+    "evil-coc7-generic-private"
+  );
+
+  const load = message.flags?.CoC7?.load ?? {};
+  const pool = load.dicePool ?? {};
+
+  for (const roll of rolls) {
+    const value = extractConCheckRollValue(roll);
+    if (value) {
+      roll.dataset.evilCoc7DisplayedResult = value;
+    }
+  }
+
+  const summary = {
+    name: game.i18n.localize("CoC7.ConstitutionCheck"),
+    threshold: formatThreshold(pool),
+    difficulty: localizeDifficulty(pool.difficulty)
+  };
+
+  decorateStandardRollMessage(message, html, content, rolls, summary);
+  html.classList.add("evil-coc7-concheck-card");
+
+  for (const roll of rolls) {
+    decorateConCheckOutcome(roll);
+  }
+}
+
+function extractConCheckRollValue(roll) {
+  const parts = [...roll.querySelectorAll(".dice-tooltip .part-total")]
+    .map((part) => Number.parseInt(
+      part.textContent?.replace(/\s+/g, " ").trim() ?? "",
+      10
+    ))
+    .filter(Number.isFinite);
+
+  if (parts.length < 2) return "";
+
+  const tens = parts[0];
+  const units = parts[1];
+  const total = tens + units;
+
+  return String(total === 0 ? 100 : total);
+}
+
+function decorateConCheckOutcome(roll) {
+  if (roll.querySelector(":scope .evil-coc7-concheck-outcome")) return;
+
+  const total = roll.querySelector(":scope .dice-result > .dice-total");
+  const result = roll.querySelector(":scope .dice-result");
+  if (!total || !result) return;
+
+  const outcomeText =
+    total.textContent?.replace(/\s+/g, " ").trim() ?? "";
+
+  if (!outcomeText || /^\d{1,3}$/u.test(outcomeText)) return;
+
+  const outcome = document.createElement("div");
+  outcome.className = "evil-coc7-concheck-outcome";
+  outcome.textContent = outcomeText;
+
+  const state = detectState(total);
+  outcome.classList.add(`evil-coc7-concheck-outcome-${state}`);
+
+  const summary = result.querySelector(":scope > .evil-coc7-result-display");
+  if (summary) {
+    summary.insertAdjacentElement("afterend", outcome);
+  } else {
+    result.prepend(outcome);
+  }
+}
+
+function isGenericCoC7CheckResult(content, rolls) {
+  if (!content || !rolls?.length) return false;
+
+  const hasCoC7Actions = Boolean(
+    content.querySelector(".owner-and-keeper-block.coc7-card-buttons")
+  );
+
+  const hasCoC7SuccessIcons = Boolean(
+    content.querySelector(".dice-formula .roll-icons")
+  );
+
+  const hasCoC7ResultState = rolls.some((roll) => {
+    const total = roll.querySelector(":scope > .dice-result > .dice-total");
+    if (!total) return false;
+
+    return [
+      "critical",
+      "fumble",
+      "failure",
+      "success-regular",
+      "success-hard",
+      "success-extreme"
+    ].some((className) => total.classList.contains(className));
+  });
+
+  return hasCoC7Actions || hasCoC7SuccessIcons || hasCoC7ResultState;
+}
+
+function getGenericCheckSummary(message, content) {
+  const actor = message.speakerActor ?? null;
+  const base = getCheckSummary(message, actor);
+
+  const flavor = String(message.flavor ?? "");
+  const flavorHolder = document.createElement("div");
+  flavorHolder.innerHTML = flavor;
+  const flavorText =
+    flavorHolder.textContent?.replace(/\s+/g, " ").trim() ?? "";
+
+  let threshold = base.threshold;
+  if (!threshold) {
+    const thresholdMatch = flavorText.match(/(\d{1,3})\s*%/u);
+    if (thresholdMatch) threshold = thresholdMatch[1];
+  }
+
+  let difficulty = base.difficulty;
+  if (!difficulty) {
+    const renderedText =
+      content.textContent?.replace(/\s+/g, " ").trim().toLocaleLowerCase() ?? "";
+
+    const candidates = [
+      game.i18n.localize("CoC7.CriticalDifficulty"),
+      game.i18n.localize("CoC7.ExtremeDifficulty"),
+      game.i18n.localize("CoC7.HardDifficulty"),
+      game.i18n.localize("CoC7.RegularDifficulty")
+    ].filter(Boolean);
+
+    difficulty = candidates.find((label) =>
+      renderedText.includes(
+        String(label).replace(/\s+/g, " ").trim().toLocaleLowerCase()
+      )
+    ) ?? "";
+  }
+
+  let name = base.name;
+  const genericRollLabel = game.i18n.localize("CoC7.Roll");
+
+  if (
+    (!name || name === genericRollLabel) &&
+    flavorText
+  ) {
+    name = cleanFlavorLabel(flavorText);
+  }
+
+  return {
+    name: name || genericRollLabel,
+    threshold,
+    difficulty
+  };
+}
+
+function decorateGenericChatMessage(message, html, content) {
+  const isPrivate =
+    html.classList.contains("whisper") ||
+    html.classList.contains("blind") ||
+    (Array.isArray(message.whisper) && message.whisper.length > 0);
+
+  html.classList.add(
+    "evil-coc7-generic-card",
+    isPrivate
+      ? "evil-coc7-generic-private"
+      : "evil-coc7-generic-public"
+  );
+
+  for (const area of content.querySelectorAll(".coc7-card-buttons")) {
+    area.classList.add("evil-coc7-generic-actions");
+  }
+
+  for (const link of content.querySelectorAll(".coc7-link")) {
+    link.classList.add("evil-coc7-generic-link");
+  }
+
+  if (!isPrivate) return;
+
+  const metadata = html.querySelector(":scope > .message-header .message-metadata");
+  if (!metadata || metadata.querySelector(":scope > .evil-coc7-private-badge")) {
+    return;
+  }
+
+  const badge = document.createElement("span");
+  badge.className = "evil-coc7-private-badge";
+  badge.title = isFrenchUi() ? "Message privé" : "Private message";
+
+  const icon = document.createElement("i");
+  icon.className = "fa-solid fa-lock";
+  icon.setAttribute("aria-hidden", "true");
+
+  const label = document.createElement("span");
+  label.textContent = isFrenchUi() ? "PRIVÉ" : "PRIVATE";
+
+  badge.append(icon, label);
+  metadata.prepend(badge);
+}
 
 
 function decorateCombinedMessage(message, html, content) {
@@ -1388,7 +1633,13 @@ function decorateRangedTargetOption(targetOption) {
   }
 }
 
-function decorateStandardRollMessage(message, html, content, rolls) {
+function decorateStandardRollMessage(
+  message,
+  html,
+  content,
+  rolls,
+  summaryOverride = null
+) {
   if (content.querySelector(":scope > .evil-coc7-card-header")) return;
 
   const visibleTotals = rolls
@@ -1409,7 +1660,7 @@ function decorateStandardRollMessage(message, html, content, rolls) {
   );
 
   const actor = message.speakerActor ?? null;
-  const summary = getCheckSummary(message, actor);
+  const summary = summaryOverride ?? getCheckSummary(message, actor);
 
   content.prepend(createHeader(message, actor, summary));
 
@@ -1499,7 +1750,10 @@ function decorateRoll(roll) {
   const resultNumber = document.createElement("div");
   resultNumber.className = "evil-coc7-result-number";
 
-  const displayedValue = extractDisplayedResult(total.textContent);
+  const preparedValue = roll.dataset.evilCoc7DisplayedResult;
+  const displayedValue = preparedValue
+    ? extractDisplayedResult(preparedValue)
+    : extractDisplayedResult(total.textContent);
   resultNumber.textContent = displayedValue.text;
   if (displayedValue.numeric && displayedValue.text.length >= 3) {
     resultNumber.classList.add("evil-coc7-result-number-3digits");
