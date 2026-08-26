@@ -2,7 +2,7 @@
   "id": "evil-coc7-card",
   "title": "Evilbram Amélioration cartes CoC7",
   "description": "Amélioration visuelle des cartes de jets du système Call of Cthulhu 7th Edition, sans modification de la logique de jeu.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -30,6 +30,7 @@
     }
   ],
   "url": "https://github.com/ctotone/evil-coc7-card",
-  "manifest": "https://raw.githubusercontent.com/ctotone/evil-coc7-card/main/module.json",
-  "download": "https://github.com/ctotone/evil-coc7-card/releases/download/1.1.0/evil-coc7-card.zip"
+  "manifest": "https://github.com/ctotone/evil-coc7-card/releases/latest/download/module.json",
+  "download": "https://github.com/ctotone/evil-coc7-card/releases/download/1.2.0/evil-coc7-card.zip",
+  "changelog": "https://github.com/ctotone/evil-coc7-card/blob/main/CHANGELOG.md"
 }
