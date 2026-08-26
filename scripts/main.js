@@ -48,14 +48,33 @@ const ATTRIBUTE_LABELS = {
   build: "CoC7.Build"
 };
 
-const FRENCH_CANON_LABELS = {
-  critical: "Réussite critique",
-  extreme: "Réussite extrême",
-  hard: "Réussite majeure",
-  regular: "Réussite",
-  failure: "Échec",
-  fumble: "Échec critique"
+const MODULE_I18N_PREFIX = "EVILCOC7CARD";
+
+const MODULE_STATE_LABEL_KEYS = {
+  critical: "Result.Critical",
+  extreme: "Result.Extreme",
+  hard: "Result.Hard",
+  regular: "Result.Regular",
+  failure: "Result.Failure",
+  fumble: "Result.Fumble"
 };
+
+function localizeModule(key, data = {}) {
+  const fullKey = `${MODULE_I18N_PREFIX}.${key}`;
+  const values = data && typeof data === "object" ? data : {};
+  const hasValues = Object.keys(values).length > 0;
+
+  if (hasValues && game.i18n?.format) {
+    return game.i18n.format(fullKey, values);
+  }
+
+  const localized = game.i18n.localize(fullKey);
+  if (!hasValues) return localized;
+
+  return localized.replace(/\{(\w+)\}/g, (match, name) => (
+    Object.hasOwn(values, name) ? String(values[name]) : match
+  ));
+}
 
 Hooks.on("renderChatMessageHTML", (message, html) => {
   try {
@@ -81,7 +100,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
         return;
       }
 
-      decorateGenericChatMessage(message, html, content);
+      decorateConCheckRequestMessage(message, html, content);
       return;
     }
 
@@ -270,6 +289,59 @@ function decorateConCheckMessage(message, html, content, rolls) {
   }
 }
 
+
+function decorateConCheckRequestMessage(message, html, content) {
+  decorateGenericChatMessage(message, html, content);
+
+  const load = message.flags?.CoC7?.load ?? {};
+  const isStayAlive = load.stayAlive === true;
+  const button = content.querySelector('[data-action="rollConCheck"]');
+
+  html.classList.add(
+    "evil-coc7-concheck-request-card",
+    isStayAlive
+      ? "evil-coc7-concheck-request-stayalive"
+      : "evil-coc7-concheck-request-shock"
+  );
+
+  if (!button || content.querySelector(":scope > .evil-coc7-concheck-request-hero")) {
+    return;
+  }
+
+  const hero = document.createElement("div");
+  hero.className = "evil-coc7-concheck-request-hero";
+
+  const icon = document.createElement("div");
+  icon.className = "evil-coc7-concheck-request-icon";
+
+  const symbol = document.createElement("i");
+  symbol.className = isStayAlive
+    ? "fa-solid fa-skull"
+    : "fa-solid fa-heart-pulse";
+  symbol.setAttribute("aria-hidden", "true");
+  icon.append(symbol);
+
+  const text = document.createElement("div");
+  text.className = "evil-coc7-concheck-request-text";
+
+  const title = document.createElement("div");
+  title.className = "evil-coc7-concheck-request-title";
+  title.textContent = localizeModule(
+    isStayAlive
+      ? "ConCheck.Request.Survival"
+      : "ConCheck.Request.Shock"
+  );
+
+  const subtitle = document.createElement("div");
+  subtitle.className = "evil-coc7-concheck-request-subtitle";
+  subtitle.textContent = button.textContent?.replace(/\s+/g, " ").trim() ||
+    game.i18n.localize("CoC7.ConstitutionCheck");
+
+  text.append(title, subtitle);
+  hero.append(icon, text);
+  content.prepend(hero);
+}
+
 function extractConCheckRollValue(roll) {
   const parts = [...roll.querySelectorAll(".dice-tooltip .part-total")]
     .map((part) => Number.parseInt(
@@ -424,14 +496,14 @@ function decorateGenericChatMessage(message, html, content) {
 
   const badge = document.createElement("span");
   badge.className = "evil-coc7-private-badge";
-  badge.title = isFrenchUi() ? "Message privé" : "Private message";
+  badge.title = localizeModule("Privacy.PrivateMessage");
 
   const icon = document.createElement("i");
   icon.className = "fa-solid fa-lock";
   icon.setAttribute("aria-hidden", "true");
 
   const label = document.createElement("span");
-  label.textContent = isFrenchUi() ? "PRIVÉ" : "PRIVATE";
+  label.textContent = localizeModule("Privacy.PrivateBadge");
 
   badge.append(icon, label);
   metadata.prepend(badge);
@@ -483,22 +555,16 @@ function decorateCombinedMessage(message, html, content) {
 
       for (const button of typeButtons) {
         if (button.dataset.value === "any") {
-          button.textContent = isFrenchUi()
-            ? "Au moins un"
-            : "At least one";
+          button.textContent = localizeModule("Combined.Condition.Any");
         } else if (button.dataset.value === "all") {
-          button.textContent = isFrenchUi()
-            ? "Tous"
-            : "All";
+          button.textContent = localizeModule("Combined.Condition.All");
         }
       }
     }
 
     if (rollButton) {
       area.classList.add("evil-coc7-combined-primary-action");
-      rollButton.textContent = isFrenchUi()
-        ? "Lancer les jets"
-        : "Roll checks";
+      rollButton.textContent = localizeModule("Action.RollChecks");
     }
 
     if (closeButton) {
@@ -543,17 +609,11 @@ function createCombinedHeader(load) {
   subtitle.className = "evil-coc7-combined-subtitle";
 
   if (load.combinedType === "all") {
-    subtitle.textContent = isFrenchUi()
-      ? "Tous les jets doivent réussir"
-      : "All checks must succeed";
+    subtitle.textContent = localizeModule("Combined.Subtitle.All");
   } else if (load.combinedType === "any") {
-    subtitle.textContent = isFrenchUi()
-      ? "Au moins un jet doit réussir"
-      : "At least one check must succeed";
+    subtitle.textContent = localizeModule("Combined.Subtitle.Any");
   } else {
-    subtitle.textContent = isFrenchUi()
-      ? "Choisir la condition"
-      : "Choose the condition";
+    subtitle.textContent = localizeModule("Combined.Subtitle.Choose");
   }
 
   text.append(title, subtitle);
@@ -596,7 +656,7 @@ function decorateCombinedActorGroup(group) {
   if (name) {
     name.textContent =
       image?.dataset?.tooltip?.replace(/\s+/g, " ").trim() ||
-      (isFrenchUi() ? "Investigateur" : "Investigator");
+      localizeModule("Participant.Investigator");
   }
 
   for (const header of details.querySelectorAll(":scope > .roll-header")) {
@@ -767,8 +827,8 @@ function decorateCombinedFinalVerdict(roll) {
       );
 
     const base = failure
-      ? (isFrenchUi() ? "Échec du jet combiné" : "Combined check failed")
-      : (isFrenchUi() ? "Réussite du jet combiné" : "Combined check succeeded");
+      ? localizeModule("Combined.Result.Failed")
+      : localizeModule("Combined.Result.Succeeded");
 
     label.textContent = pushed
       ? `${base} — ${game.i18n.localize("CoC7.PushedRoll")}`
@@ -825,15 +885,11 @@ function decorateOpposedMessage(message, html, content) {
       area.classList.add("evil-coc7-opposed-footer-actions");
 
       if (start) {
-        start.textContent = isFrenchUi()
-          ? "Lancer les jets"
-          : "Start rolls";
+        start.textContent = localizeModule("Action.StartRolls");
       }
 
       if (damage) {
-        damage.textContent = isFrenchUi()
-          ? "Lancer les dégâts"
-          : "Roll damage";
+        damage.textContent = localizeModule("Action.RollDamage");
       }
     }
   }
@@ -879,7 +935,7 @@ function createOpposedHeader(load) {
   subtitle.className = "evil-coc7-opposed-subtitle";
   subtitle.textContent = load.isCombat
     ? game.i18n.localize("CoC7.AttackManeuver")
-    : (isFrenchUi() ? "Opposition" : "Opposed check");
+    : localizeModule("Opposed.Check");
 
   text.append(title, subtitle);
   header.append(icon, text);
@@ -941,7 +997,7 @@ function decorateOpposedActorGroup(group) {
   if (name) {
     name.textContent =
       image?.dataset?.tooltip?.replace(/\s+/g, " ").trim() ||
-      (isFrenchUi() ? "Participant" : "Participant");
+      localizeModule("Participant.Participant");
   }
 
   if (role) {
@@ -1005,14 +1061,14 @@ function getOpposedParticipantLabel(button) {
   const tooltip = String(button?.dataset?.tooltip ?? "");
 
   if (tooltip.endsWith("ParticipantAttacker")) {
-    return isFrenchUi() ? "Attaquant" : "Attacker";
+    return localizeModule("Participant.Attacker");
   }
 
   if (tooltip.endsWith("ParticipantDefender")) {
-    return isFrenchUi() ? "Défenseur" : "Defender";
+    return localizeModule("Participant.Defender");
   }
 
-  return isFrenchUi() ? "Participant" : "Participant";
+  return localizeModule("Participant.Participant");
 }
 
 function decorateOpposedDiceRoll(roll) {
@@ -1183,9 +1239,7 @@ function decorateRangedResultMessage(message, html, content) {
   const damageArea = damageButton?.closest(".coc7-card-buttons");
 
   if (damageButton) {
-    damageButton.textContent = isFrenchUi()
-      ? "Lancer les dégâts"
-      : "Roll damage";
+    damageButton.textContent = localizeModule("Action.RollDamage");
   }
 
   if (damageArea) {
@@ -1208,6 +1262,14 @@ function decorateEmbeddedRangedDamage(results) {
 
     for (const roll of section.querySelectorAll(".dice-roll")) {
       roll.classList.add("evil-coc7-ranged-damage-roll");
+
+      const appliedFormula = roll.querySelector(".dice-formula .fa-check")
+        ?.closest(".dice-formula");
+
+      if (appliedFormula) {
+        roll.classList.add("evil-coc7-ranged-damage-applied-roll");
+        appliedFormula.classList.add("evil-coc7-ranged-damage-applied-formula");
+      }
     }
 
     for (const area of section.querySelectorAll(".coc7-card-buttons")) {
@@ -1221,16 +1283,24 @@ function decorateEmbeddedRangedDamage(results) {
           action === "dealDamage" ||
           action === "applyValue"
         ) {
-          button.textContent = isFrenchUi()
-            ? "Infliger les dommages"
-            : "Inflict damage";
+          button.textContent = localizeModule("Action.InflictDamage");
         } else if (action === "rollDamage") {
-          button.textContent = isFrenchUi()
-            ? "Lancer les dégâts"
-            : "Roll damage";
+          button.textContent = localizeModule("Action.RollDamage");
         }
       }
     }
+
+    const hasApplyButton = Boolean(section.querySelector(
+      'button[data-action="deal-range-damage"], button[data-action="dealDamage"], button[data-action="applyValue"]'
+    ));
+    const hasAppliedDamage = Boolean(
+      section.querySelector(".evil-coc7-ranged-damage-applied-formula")
+    );
+
+    section.classList.toggle(
+      "evil-coc7-ranged-damage-applied-status",
+      !hasApplyButton && hasAppliedDamage
+    );
   }
 }
 
@@ -1269,9 +1339,9 @@ function decorateRangedShotResult(roll, index, count) {
   if (count > 1) {
     const shotIndex = document.createElement("div");
     shotIndex.className = "evil-coc7-ranged-shot-index";
-    shotIndex.textContent = isFrenchUi()
-      ? `Tir ${index + 1}`
-      : `Shot ${index + 1}`;
+    shotIndex.textContent = localizeModule("Ranged.ShotNumber", {
+      number: index + 1
+    });
     valueColumn.append(shotIndex);
   }
 
@@ -1374,7 +1444,7 @@ function getRangedShotFallbackLabel(state) {
 
   return labels[state]
     ? game.i18n.localize(labels[state])
-    : (isFrenchUi() ? "Résultat" : "Result");
+    : localizeModule("Ranged.Result");
 }
 
 function getRangedShotTargetName(result) {
@@ -1477,7 +1547,7 @@ function decorateRangedPreparationHeader(nativeHeader) {
 
   const role = document.createElement("div");
   role.className = "evil-coc7-ranged-role";
-  role.textContent = isFrenchUi() ? "Tir à distance" : "Ranged attack";
+  role.textContent = localizeModule("Ranged.Attack");
 
   const weaponName = document.createElement("div");
   weaponName.className = "evil-coc7-ranged-weapon-name";
@@ -2191,14 +2261,15 @@ function decorateMeleeDamageRoll(roll, context) {
   const label = document.createElement("div");
   label.className = "evil-coc7-damage-roll-label";
   label.textContent = context.isDamageInflicted
-    ? (isFrenchUi() ? "DÉGÂTS INFLIGÉS" : "DAMAGE INFLICTED")
-    : (isFrenchUi() ? "DÉGÂTS" : "DAMAGE");
+    ? localizeModule("Damage.Inflicted")
+    : localizeModule("Damage.Title");
 
   const detail = document.createElement("div");
   detail.className = "evil-coc7-damage-roll-detail";
   detail.textContent = context.effectText && context.effectText !== context.total
     ? context.effectText
-    : context.itemName;
+    : "";
+  detail.hidden = !detail.textContent;
 
   verdict.append(icon, label, detail);
   total.insertAdjacentElement("afterend", verdict);
@@ -2262,9 +2333,7 @@ function decorateMeleeDamageControls(content, context) {
   const rollArea = rollButton?.closest(".coc7-card-buttons");
 
   if (rollButton) {
-    rollButton.textContent = isFrenchUi()
-      ? "Lancer les dégâts"
-      : "Roll damage";
+    rollButton.textContent = localizeModule("Action.RollDamage");
   }
 
   if (rollArea) {
@@ -2276,9 +2345,7 @@ function decorateMeleeDamageControls(content, context) {
     content.querySelector('[data-action="applyValue"]');
 
   if (applyButton) {
-    applyButton.textContent = isFrenchUi()
-      ? "Infliger les dommages"
-      : "Inflict damage";
+    applyButton.textContent = localizeModule("Action.InflictDamage");
   }
 
   const applyArea = applyButton?.closest(".coc7-card-buttons");
@@ -2312,9 +2379,7 @@ function decorateMeleeResolutionMessage(message, html, content) {
 
   const title = document.createElement("div");
   title.className = "evil-coc7-resolution-title";
-  title.textContent = isFrenchUi()
-    ? "Résolution de mêlée"
-    : "Melee resolution";
+  title.textContent = localizeModule("Melee.Resolution");
 
   const ornament = document.createElement("div");
   ornament.className = "evil-coc7-resolution-header-ornament";
@@ -2360,7 +2425,7 @@ function decorateMeleeResolutionMessage(message, html, content) {
   verdictText.className = "evil-coc7-resolution-verdict-text";
   verdictText.textContent =
     context.resultText ||
-    (isFrenchUi() ? "Combat résolu" : "Combat resolved");
+    localizeModule("Melee.CombatResolved");
 
   verdict.append(icon, verdictText);
   layout.append(verdict);
@@ -2733,7 +2798,7 @@ function getMeleeTargetContext(message) {
     ? getCombatMessageResult(attackerMessage)
     : {
         state: "hidden",
-        label: isFrenchUi() ? "Masqué" : "Hidden",
+        label: localizeModule("Visibility.Hidden"),
         total: ""
       };
 
@@ -2861,7 +2926,7 @@ function createMeleeDefenderHeader(context) {
 
   const role = document.createElement("div");
   role.className = "evil-coc7-defender-role";
-  role.textContent = isFrenchUi() ? "Défenseur" : "Defender";
+  role.textContent = localizeModule("Participant.Defender");
 
   const difficulty = document.createElement("div");
   difficulty.className = "evil-coc7-card-difficulty";
@@ -2891,11 +2956,11 @@ function createMeleeDefenderContext(context) {
 
   block.append(
     createDefenderContextLine(
-      isFrenchUi() ? "Attaquant" : "Attacker",
+      localizeModule("Participant.Attacker"),
       context.attackerName
     ),
     createDefenderContextLine(
-      isFrenchUi() ? "Arme" : "Weapon",
+      localizeModule("Context.Weapon"),
       context.attackerWeaponName
     )
   );
@@ -2909,7 +2974,7 @@ function createMeleeDefenderContext(context) {
       : context.attackerResult.label;
 
     const resultLine = createDefenderContextLine(
-      isFrenchUi() ? "Résultat de l’attaquant" : "Attacker result",
+      localizeModule("Context.AttackerResult"),
       resultText
     );
     resultLine.classList.add(
@@ -2921,7 +2986,7 @@ function createMeleeDefenderContext(context) {
 
   if (context.reaction !== "none") {
     const reactionLine = createDefenderContextLine(
-      isFrenchUi() ? "Votre réaction" : "Your reaction",
+      localizeModule("Context.YourReaction"),
       getDefenderReactionLabel(context.reaction)
     );
     reactionLine.classList.add("evil-coc7-defender-current-reaction");
@@ -2980,13 +3045,13 @@ function createMeleeDefenderHero(context) {
 
   const label = document.createElement("div");
   label.className = "evil-coc7-defender-state-label";
-  label.textContent = isFrenchUi() ? "DÉFENSE" : "DEFENSE";
+  label.textContent = localizeModule("State.Defense");
 
   const detail = document.createElement("div");
   detail.className = "evil-coc7-defender-state-detail";
   detail.textContent =
     context.reaction === "none"
-      ? (isFrenchUi() ? "Votre réaction" : "Your reaction")
+      ? localizeModule("Context.YourReaction")
       : getDefenderReactionLabel(context.reaction);
 
   const ornament = document.createElement("div");
@@ -3169,29 +3234,19 @@ function decorateMeleeTargetRollButton(button, context) {
 
   switch (context.reaction) {
     case "dodge":
-      title.textContent = isFrenchUi()
-        ? "Lancer la défense"
-        : "Roll defense";
+      title.textContent = localizeModule("Action.RollDefense");
       break;
     case "fight-back":
-      title.textContent = isFrenchUi()
-        ? "Lancer la riposte"
-        : "Roll fight back";
+      title.textContent = localizeModule("Action.RollFightBack");
       break;
     case "maneuver":
-      title.textContent = isFrenchUi()
-        ? "Lancer la manœuvre"
-        : "Roll maneuver";
+      title.textContent = localizeModule("Action.RollManeuver");
       break;
     case "no-response":
-      title.textContent = isFrenchUi()
-        ? "Confirmer la réponse"
-        : "Confirm response";
+      title.textContent = localizeModule("Action.ConfirmResponse");
       break;
     default:
-      title.textContent = isFrenchUi()
-        ? "Lancer la défense"
-        : "Roll defense";
+      title.textContent = localizeModule("Action.RollDefense");
   }
 
   if (context.reaction === "no-response") {
@@ -3210,25 +3265,16 @@ function decorateMeleeTargetRollButton(button, context) {
 }
 
 function getDefenderReactionLabel(reaction) {
-  if (isFrenchUi()) {
-    return {
-      dodge: "Esquive",
-      "no-response": "Pas de réponse",
-      "fight-back": "Rendre les coups",
-      maneuver: "Manœuvre",
-      defense: "Défense",
-      none: "Défense"
-    }[reaction] ?? "";
-  }
-
-  const key = {
-    dodge: "CoC7.Dodge",
-    "no-response": "CoC7.NoResponse",
-    "fight-back": "CoC7.FightBack",
-    maneuver: "CoC7.Maneuver"
+  const moduleKey = {
+    dodge: "Reaction.Dodge",
+    "no-response": "Reaction.NoResponse",
+    "fight-back": "Reaction.FightBack",
+    maneuver: "Reaction.Maneuver",
+    defense: "Reaction.Defense",
+    none: "Reaction.Defense"
   }[reaction];
 
-  return key ? game.i18n.localize(key) : "Defense";
+  return moduleKey ? localizeModule(moduleKey) : "";
 }
 
 
@@ -3284,7 +3330,7 @@ function decorateMeleeInitiatorHiddenMessage(message, html, content) {
 
   const title = document.createElement("div");
   title.className = "evil-coc7-melee-hidden-title";
-  title.textContent = titleText || (isFrenchUi() ? "Combat" : "Combat");
+  title.textContent = titleText || localizeModule("Combat.Title");
 
   const right = document.createElement("div");
   right.className = "evil-coc7-melee-hidden-right";
@@ -3395,7 +3441,7 @@ function decorateMeleeInitiatorRolledMessage(message, html, content) {
 
   const role = document.createElement("div");
   role.className = "evil-coc7-melee-attacker-result-role";
-  role.textContent = isFrenchUi() ? "Attaquant" : "Attacker";
+  role.textContent = localizeModule("Participant.Attacker");
 
   const itemLine = document.createElement("div");
   itemLine.className = "evil-coc7-melee-attacker-result-item-line";
@@ -3455,7 +3501,7 @@ function decorateMeleeInitiatorRolledMessage(message, html, content) {
 
     const label = document.createElement("span");
     label.className = "evil-coc7-melee-attacker-result-target-label";
-    label.textContent = isFrenchUi() ? "Cible :" : "Target:";
+    label.textContent = localizeModule("Context.TargetLabel");
 
     const value = document.createElement("span");
     value.className = "evil-coc7-melee-attacker-result-target-name";
@@ -3730,7 +3776,7 @@ function createMeleeTargetRow({ targetName, nativeTargetImage }) {
 
   const label = document.createElement("span");
   label.className = "evil-coc7-melee-target-label";
-  label.textContent = `${game.i18n.localize("CoC7.Target")} :`;
+  label.textContent = localizeModule("Context.TargetLabel");
 
   const name = document.createElement("span");
   name.className = "evil-coc7-melee-target-name";
@@ -3781,7 +3827,7 @@ function createMeleeHero(skill) {
 
   const label = document.createElement("div");
   label.className = "evil-coc7-melee-state-label";
-  label.textContent = isFrenchUi() ? "ATTAQUE" : "ATTACK";
+  label.textContent = localizeModule("State.Attack");
 
   const ornament = document.createElement("div");
   ornament.className = "evil-coc7-verdict-ornament";
@@ -3797,7 +3843,7 @@ function decorateMeleeAttackButton(button, skill) {
 
   const title = document.createElement("span");
   title.className = "evil-coc7-melee-attack-title";
-  title.textContent = isFrenchUi() ? "Lancer l’attaque" : "Roll attack";
+  title.textContent = localizeModule("Action.RollAttack");
 
   const detail = document.createElement("span");
   detail.className = "evil-coc7-melee-attack-detail";
@@ -3865,41 +3911,19 @@ function getDocumentImage(document) {
   );
 }
 
-function isFrenchUi() {
-  return String(game.i18n.lang ?? "").toLowerCase().startsWith("fr");
-}
-
 function getVerdictLabel(state) {
-  if (String(game.i18n.lang ?? "").toLowerCase().startsWith("fr")) {
-    return FRENCH_CANON_LABELS[state] ?? "";
-  }
-
-  const labelKey = STATE_DEFINITIONS[state]?.label;
-  return labelKey ? game.i18n.localize(labelKey) : "";
+  const moduleKey = MODULE_STATE_LABEL_KEYS[state];
+  return moduleKey ? localizeModule(moduleKey) : "";
 }
 
 function formatDifficultyLine(difficulty) {
   if (!difficulty) return game.i18n.localize("CoC7.RollDifficulty");
 
-  if (String(game.i18n.lang ?? "").toLowerCase().startsWith("fr")) {
-    return `Difficulté ${difficulty}`;
-  }
-
-  return `${game.i18n.localize("CoC7.RollDifficulty")}: ${difficulty}`;
+  return localizeModule("RollDifficultyLine", { difficulty });
 }
 
 function normalizeDifficultyDisplayLabel(text) {
-  const raw = String(text ?? "").replace(/\s+/g, " ").trim();
-  if (!raw) return raw;
-
-  if (isFrenchUi()) {
-    return raw
-      .replace(/\bstandard\b/giu, "ordinaire")
-      .replace(/^difficulté\s*:/iu, "Difficulté ")
-      .replace(/^difficulté\s+/iu, "Difficulté ");
-  }
-
-  return raw;
+  return String(text ?? "").replace(/\s+/g, " ").trim();
 }
 
 function harmonizeRollHeaderTags(header) {

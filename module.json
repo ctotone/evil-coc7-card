@@ -2,7 +2,7 @@
   "id": "evil-coc7-card",
   "title": "Evilbram Amélioration cartes CoC7",
   "description": "Amélioration visuelle des cartes de jets du système Call of Cthulhu 7th Edition, sans modification de la logique de jeu.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -31,6 +31,38 @@
   ],
   "url": "https://github.com/ctotone/evil-coc7-card",
   "manifest": "https://github.com/ctotone/evil-coc7-card/releases/latest/download/module.json",
-  "download": "https://github.com/ctotone/evil-coc7-card/releases/download/1.2.0/evil-coc7-card.zip",
-  "changelog": "https://github.com/ctotone/evil-coc7-card/blob/main/CHANGELOG.md"
+  "download": "https://github.com/ctotone/evil-coc7-card/releases/download/1.3.0/evil-coc7-card.zip",
+  "changelog": "https://github.com/ctotone/evil-coc7-card/blob/main/CHANGELOG.md",
+  "languages": [
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    },
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "lang/es.json"
+    },
+    {
+      "lang": "it",
+      "name": "Italiano",
+      "path": "lang/it.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    }
+  ]
 }
