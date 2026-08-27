@@ -1,3 +1,11 @@
+## 1.3.1 — Partage de Documents Foundry dans le chat
+
+- Ajout d’un style générique pour les liens de Documents Foundry glissés dans le chat.
+- Affichage compact lorsque le lien est intégré à un message.
+- Affichage en mini-carte pleine largeur lorsqu’un ou plusieurs Documents sont partagés seuls.
+- Support basé sur `CONST.DOCUMENT_LINK_TYPES` afin de suivre les types de liens officiellement exposés par Foundry.
+- Conservation du comportement natif Foundry : UUID, permissions, ouverture du Document et interactions ne sont pas réimplémentés.
+
 ## 1.3.0 — Localisation multilingue et corrections d’affichage
 
 - Ajout de la localisation du module en allemand, anglais, français, espagnol, italien et portugais brésilien.

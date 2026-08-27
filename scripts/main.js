@@ -487,6 +487,8 @@ function decorateGenericChatMessage(message, html, content) {
     link.classList.add("evil-coc7-generic-link");
   }
 
+  decorateFoundryDocumentLinks(html, content);
+
   if (!isPrivate) return;
 
   const metadata = html.querySelector(":scope > .message-header .message-metadata");
@@ -507,6 +509,119 @@ function decorateGenericChatMessage(message, html, content) {
 
   badge.append(icon, label);
   metadata.prepend(badge);
+}
+
+
+
+function decorateFoundryDocumentLinks(html, content) {
+  const allowedTypes = new Set(globalThis.CONST?.DOCUMENT_LINK_TYPES ?? []);
+  if (!allowedTypes.size) return;
+
+  const selector = "a.content-link[data-type][data-uuid]";
+  const links = [...content.querySelectorAll(selector)]
+    .filter((link) => allowedTypes.has(link.dataset.type));
+
+  if (!links.length) return;
+
+  for (const link of links) {
+    link.classList.add("evil-coc7-document-link");
+  }
+
+  if (!isStandaloneFoundryDocumentShare(content, allowedTypes)) {
+    return;
+  }
+
+  html.classList.add("evil-coc7-document-share-card");
+  content.classList.add("evil-coc7-document-share-content");
+
+  for (const paragraph of content.querySelectorAll(":scope > p")) {
+    if (isVisuallyEmptyChatElement(paragraph)) {
+      paragraph.classList.add("evil-coc7-document-share-empty");
+      continue;
+    }
+
+    if (isDocumentLinkOnlyContainer(paragraph, allowedTypes)) {
+      paragraph.classList.add("evil-coc7-document-share-row");
+    }
+  }
+}
+
+function isStandaloneFoundryDocumentShare(content, allowedTypes) {
+  const selector = "a.content-link[data-type][data-uuid]";
+  let hasDocumentLink = false;
+
+  for (const node of content.childNodes) {
+    if (node.nodeType === Node.COMMENT_NODE) continue;
+
+    if (node.nodeType === Node.TEXT_NODE) {
+      if (node.textContent?.trim()) return false;
+      continue;
+    }
+
+    if (node.nodeType !== Node.ELEMENT_NODE) continue;
+
+    const element = node;
+
+    if (isVisuallyEmptyChatElement(element)) continue;
+
+    if (
+      element.matches(selector) &&
+      allowedTypes.has(element.dataset.type)
+    ) {
+      hasDocumentLink = true;
+      continue;
+    }
+
+    if (
+      element.matches("p") &&
+      isDocumentLinkOnlyContainer(element, allowedTypes)
+    ) {
+      hasDocumentLink = true;
+      continue;
+    }
+
+    return false;
+  }
+
+  return hasDocumentLink;
+}
+
+function isDocumentLinkOnlyContainer(element, allowedTypes) {
+  const selector = "a.content-link[data-type][data-uuid]";
+  let hasDocumentLink = false;
+
+  for (const node of element.childNodes) {
+    if (node.nodeType === Node.COMMENT_NODE) continue;
+
+    if (node.nodeType === Node.TEXT_NODE) {
+      if (node.textContent?.trim()) return false;
+      continue;
+    }
+
+    if (node.nodeType !== Node.ELEMENT_NODE) continue;
+
+    if (node.matches("br")) continue;
+
+    if (
+      node.matches(selector) &&
+      allowedTypes.has(node.dataset.type)
+    ) {
+      hasDocumentLink = true;
+      continue;
+    }
+
+    return false;
+  }
+
+  return hasDocumentLink;
+}
+
+function isVisuallyEmptyChatElement(element) {
+  if (element.textContent?.trim()) return false;
+
+  return !element.querySelector(
+    "a, button, input, select, textarea, img, picture, video, audio, canvas, svg, hr, .dice-roll"
+  );
 }
 
 
