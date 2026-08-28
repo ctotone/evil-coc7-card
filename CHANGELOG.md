@@ -1,3 +1,10 @@
+## 1.3.2 — Corrections visuelles
+
+- Remplacement du pictogramme générique de dégâts par l’asset dédié `assets/damage.webp`.
+- Correction de l’affichage des dés bonus/malus non retenus dans le détail d’un jet : leur valeur reste visible en surimpression sur la face du dé tout en étant atténuée.
+- Refonte visuelle des icônes de réaction de mêlée (Esquive, Pas de réponse, Riposte, Manœuvre) avec quatre médaillons illustrés dédiés, utilisés dans les boutons et les cartes.
+- Ajustement typographique du libellé français « Pas de réponse » afin de le conserver sur une seule ligne dans les boutons de réaction.
+
 ## 1.3.1 — Partage de Documents Foundry dans le chat
 
 - Ajout d’un style générique pour les liens de Documents Foundry glissés dans le chat.

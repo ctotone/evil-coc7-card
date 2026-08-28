@@ -2362,16 +2362,14 @@ function decorateMeleeDamageRoll(roll, context) {
   verdict.className = "evil-coc7-damage-roll-verdict";
 
   const icon = document.createElement("div");
-  icon.className = "evil-coc7-damage-roll-icon";
+  icon.className = "evil-coc7-damage-roll-icon evil-coc7-damage-art-icon";
 
-  const symbol = document.createElement("i");
-  symbol.className = context.isImpale
-    ? "fa-solid fa-burst"
-    : context.isCritical
-      ? "fa-solid fa-star"
-      : "fa-solid fa-burst";
-  symbol.setAttribute("aria-hidden", "true");
-  icon.append(symbol);
+  const image = document.createElement("img");
+  image.className = "evil-coc7-damage-roll-art";
+  image.src = `modules/${MODULE_ID}/assets/damage.webp`;
+  image.alt = "";
+  image.setAttribute("aria-hidden", "true");
+  icon.append(image);
 
   const label = document.createElement("div");
   label.className = "evil-coc7-damage-roll-label";
@@ -3182,29 +3180,36 @@ function createDefenderReactionIcon(reaction) {
   const icon = document.createElement("div");
   icon.className = `evil-coc7-defender-reaction-icon evil-coc7-reaction-${reaction}`;
 
-  const symbol = document.createElement("i");
-  symbol.setAttribute("aria-hidden", "true");
+  const asset = getDefenderReactionAsset(reaction);
 
-  switch (reaction) {
-    case "dodge":
-      symbol.className = "fa-solid fa-person-running";
-      break;
-    case "fight-back":
-      symbol.className = "game-icon game-icon-crossed-swords";
-      break;
-    case "maneuver":
-      symbol.className = "fa-solid fa-arrows-spin";
-      break;
-    case "no-response":
-      symbol.className = "fa-solid fa-shield";
-      break;
-    default:
-      symbol.className = "fa-solid fa-shield-halved";
-      break;
+  if (asset) {
+    icon.classList.add("evil-coc7-reaction-art-icon");
+
+    const image = document.createElement("img");
+    image.className = "evil-coc7-defender-reaction-art";
+    image.src = `modules/${MODULE_ID}/assets/reactions/${asset}`;
+    image.alt = "";
+    image.setAttribute("aria-hidden", "true");
+
+    icon.append(image);
+    return icon;
   }
 
+  const symbol = document.createElement("i");
+  symbol.className = "fa-solid fa-shield-halved";
+  symbol.setAttribute("aria-hidden", "true");
   icon.append(symbol);
+
   return icon;
+}
+
+function getDefenderReactionAsset(reaction) {
+  return {
+    dodge: "dodge.webp",
+    "no-response": "no-response.webp",
+    "fight-back": "fight-back.webp",
+    maneuver: "maneuver.webp"
+  }[reaction] ?? null;
 }
 
 function decorateMeleeDefenderChoices(container) {

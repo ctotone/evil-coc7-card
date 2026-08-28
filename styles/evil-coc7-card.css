@@ -1661,21 +1661,6 @@
 
 /* Shared reaction icons ------------------------------------------------- */
 
-.evil-coc7-defender-reaction-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--evil-coc7-accent);
-}
-
-.evil-coc7-defender-reaction-icon i {
-  color: inherit;
-  font-size: 1.24rem;
-}
-
-.evil-coc7-defender-reaction-icon .game-icon {
-  font-size: 1.38rem;
-}
 
 /* Controls -------------------------------------------------------------- */
 
@@ -1753,14 +1738,6 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   cursor: not-allowed !important;
 }
 
-.evil-coc7-defender-choice-icon {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-
-.evil-coc7-defender-choice-icon i {
-  font-size: 1.05rem;
-}
 
 .evil-coc7-defender-choice-label {
   color: inherit;
@@ -1772,21 +1749,6 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
 }
 
 /* Slight semantic distinction between choices, kept deliberately muted. */
-.evil-coc7-choice-dodge .evil-coc7-defender-choice-icon {
-  color: #6ba8c9;
-}
-
-.evil-coc7-choice-fight-back .evil-coc7-defender-choice-icon {
-  color: #9fb66b;
-}
-
-.evil-coc7-choice-maneuver .evil-coc7-defender-choice-icon {
-  color: #b58ab8;
-}
-
-.evil-coc7-choice-no-response .evil-coc7-defender-choice-icon {
-  color: #b9b2a5;
-}
 
 /* Slider reuses the initiator's visual language. */
 .chat-message.evil-coc7-melee-defender-card
@@ -10241,4 +10203,136 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   background: rgba(var(--evil-doc-accent-rgb), 0.11);
   color: var(--evil-doc-accent) !important;
   font-size: 0.72rem;
+}
+
+
+/* ========================================================================
+ * 1.3.2 — dés bonus / malus écartés
+ *
+ * Foundry/CoC7 marque nativement les dés non retenus avec `.discarded`.
+ * Le module conserve cette information et restaure la lisibilité de la
+ * valeur directement sur la face du dé, tout en la laissant atténuée.
+ * ===================================================================== */
+
+.chat-message.evil-coc7-card
+  .dice-tooltip
+  .dice-rolls
+  .roll.die.discarded {
+  color: rgba(218, 213, 203, 0.82) !important;
+  opacity: 0.42 !important;
+  text-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.95),
+    0 0 2px rgba(0, 0, 0, 0.75) !important;
+}
+
+
+/* ========================================================================
+ * 1.3.2 — médaillons de réaction
+ *
+ * Les quatre réactions utilisent les médaillons visuels validés comme
+ * assets réels du module. Les comportements des boutons CoC7 restent natifs.
+ * ===================================================================== */
+
+.evil-coc7-reaction-art-icon {
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.evil-coc7-defender-reaction-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  filter:
+    drop-shadow(0 0 1px rgba(225, 177, 70, 0.28))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+}
+
+/* Boutons : assez grand pour lire la silhouette sans agrandir la carte. */
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-icon.evil-coc7-reaction-art-icon {
+  flex: 0 0 1.72rem !important;
+  width: 1.72rem !important;
+  height: 1.72rem !important;
+  min-width: 1.72rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button {
+  gap: 0.34rem !important;
+}
+
+/* Les grands emplacements profitent du médaillon complet. */
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-header-icon.evil-coc7-reaction-art-icon {
+  width: 2.85rem !important;
+  height: 2.85rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-state-icon.evil-coc7-reaction-art-icon {
+  width: 3.35rem !important;
+  height: 3.35rem !important;
+}
+
+/* Léger éclaircissement au survol sans recolorer l'illustration. */
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button:hover
+  .evil-coc7-defender-reaction-art,
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button:focus-visible
+  .evil-coc7-defender-reaction-art,
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button.switched-on
+  .evil-coc7-defender-reaction-art {
+  filter:
+    brightness(1.12)
+    drop-shadow(0 0 2px rgba(225, 177, 70, 0.42))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+
+
+/* ========================================================================
+ * 1.3.2 — ajustement FR Pas de réponse
+ * Garde le libellé français sur une seule ligne sans toucher aux autres
+ * réactions ni aux autres langues.
+ * ===================================================================== */
+
+html[lang^="fr"]
+  .chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-choice-no-response
+  .evil-coc7-defender-choice-label {
+  font-size: 0.65rem !important;
+  white-space: nowrap !important;
+}
+
+
+/* ========================================================================
+ * 1.3.2 — icône dégâts dédiée
+ * Utilise l'asset final `assets/damage.webp` tel quel.
+ * ===================================================================== */
+
+.evil-coc7-damage-roll-icon.evil-coc7-damage-art-icon {
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.evil-coc7-damage-roll-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: none;
 }
