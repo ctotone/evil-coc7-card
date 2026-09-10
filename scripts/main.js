@@ -80,9 +80,23 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   try {
     if (game.system.id !== "CoC7") return;
 
-    const load = message.flags?.CoC7?.load ?? {};
     const content = html.querySelector(".message-content");
     if (!content) return;
+
+    /*
+     * Invariant de confidentialité :
+     * lorsque Foundry indique que le contenu du ChatMessage n'est pas visible
+     * pour l'utilisateur courant, ne jamais reconstruire la carte depuis les
+     * flags CoC7, le speaker, le flavor ou d'autres données du message.
+     *
+     * On se limite au DOM déjà rendu/sécurisé par Foundry.
+     */
+    if (message.isContentVisible === false) {
+      decorateHiddenRollPlaceholder(html, content);
+      return;
+    }
+
+    const load = message.flags?.CoC7?.load ?? {};
 
     if (load.as === STANDARD_CARD_TYPE && !load.isStandby) {
       const rolls = [...content.querySelectorAll(".dice-roll")];
@@ -254,6 +268,66 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     console.warn(`${MODULE_ID} | Impossible de décorer une carte CoC7.`, error);
   }
 });
+
+
+function decorateHiddenRollPlaceholder(html, content) {
+  const formula = content.querySelector(".dice-formula");
+  const total = content.querySelector(".dice-total");
+
+  /*
+   * Si Foundry a masqué un autre type de message, on le laisse totalement
+   * natif. Pour le placeholder de jet privé/aveugle, on ne travaille qu'avec
+   * le DOM déjà sécurisé par Foundry.
+   */
+  if (!formula || !total) return;
+
+  html.classList.add(
+    "evil-coc7-generic-card",
+    "evil-coc7-generic-private",
+    "evil-coc7-hidden-roll-placeholder"
+  );
+
+  content.classList.add("evil-coc7-hidden-roll-content");
+
+  /*
+   * Le texte visible fourni par Foundry devient le titre de la carte.
+   * Aucune donnée du ChatMessage n'est consultée ici.
+   */
+  const nativeTitle = content.querySelector(".flavor-text");
+  if (nativeTitle) {
+    nativeTitle.classList.add("evil-coc7-hidden-roll-title");
+  }
+
+  /*
+   * On masque visuellement les deux champs natifs (??? / ?) après avoir
+   * confirmé leur présence, puis on construit uniquement une représentation
+   * graphique générique à base de points d'interrogation.
+   */
+  formula.classList.add("evil-coc7-hidden-roll-native-placeholder");
+  total.classList.add("evil-coc7-hidden-roll-native-placeholder");
+
+  if (content.querySelector(":scope > .evil-coc7-hidden-roll-hero")) return;
+
+  const hero = document.createElement("div");
+  hero.className = "evil-coc7-hidden-roll-hero";
+
+  const result = document.createElement("div");
+  result.className = "evil-coc7-hidden-roll-result";
+  result.textContent = "?";
+  result.setAttribute("aria-hidden", "true");
+
+  const status = document.createElement("div");
+  status.className = "evil-coc7-hidden-roll-status";
+
+  const badge = document.createElement("div");
+  badge.className = "evil-coc7-hidden-roll-status-badge";
+  badge.textContent = "?";
+  badge.setAttribute("aria-hidden", "true");
+
+  status.append(badge);
+  hero.append(result, status);
+  content.append(hero);
+}
 
 
 

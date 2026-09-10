@@ -1,3 +1,11 @@
+## 1.3.3
+
+- Corrige une fuite d’informations sur les jets privés et aveugles : le module respecte désormais la visibilité effective du contenu définie par Foundry et ne reconstruit plus les données cachées depuis les flags CoC7.
+- Conserve le style Evilbram côté joueur pour les jets masqués, en se basant uniquement sur le DOM déjà sécurisé par Foundry.
+- Nouveau rendu harmonisé des jets privés/aveugles : titre natif conservé, grand point d’interrogation à gauche et médaillon d’état générique à droite.
+- Réserve davantage de hauteur au placeholder masqué afin de limiter le changement de taille de la carte lors de la révélation du jet.
+- Aucun changement de logique de jeu CoC7.
+
 ## 1.3.2 — Corrections visuelles
 
 - Remplacement du pictogramme générique de dégâts par l’asset dédié `assets/damage.webp`.
