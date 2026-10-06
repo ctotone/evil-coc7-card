@@ -10438,3 +10438,174 @@ html[lang^="fr"]
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
 }
 
+/* ========================================================================
+ * 1.3.4 — stabilisation des cartes de jets génériques
+ *
+ * Les jets Foundry simples (/r 1d100, etc.) héritaient encore d'une partie
+ * du thème actif et les boutons CoC7 ajoutés après le hook du module ne
+ * recevaient pas toujours la classe de présentation prévue.
+ *
+ * Cette passe cible directement le DOM natif de la carte générique :
+ * aucun comportement, listener ou contenu n'est modifié.
+ * ===================================================================== */
+
+/* Zone de jet : rendu explicite et identique en thème clair / sombre. */
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .dice-roll {
+  width: 100% !important;
+  margin: 0.08rem 0 0.32rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .dice-result {
+  display: grid !important;
+  gap: 0.34rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .dice-formula,
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .dice-total {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 1.72rem !important;
+  margin: 0 !important;
+  padding: 0.22rem 0.48rem !important;
+  border: 1px solid rgba(var(--evil-generic-accent-rgb), 0.52) !important;
+  border-radius: 4px !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(var(--evil-generic-accent-rgb), 0.10),
+      rgba(0, 0, 0, 0.22)
+    ) !important;
+  color: var(--evil-generic-text) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.018) !important;
+  text-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .dice-formula {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .dice-total {
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 1.12rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+/* Tooltip : conserver la lisibilité du détail sans laisser le thème actif
+   recolorer brutalement la carte. */
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .dice-tooltip {
+  border-color: rgba(var(--evil-generic-accent-rgb), 0.20) !important;
+  background: rgba(0, 0, 0, 0.16) !important;
+  color: var(--evil-generic-text) !important;
+}
+
+/* CoC7 ajoute certains contrôles (dont "Définir comme dégâts/soin") après
+   le rendu initial. On cible donc directement le conteneur natif au lieu de
+   dépendre uniquement de `.evil-coc7-generic-actions`. */
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .coc7-card-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)) !important;
+  gap: 0.38rem !important;
+  width: 100% !important;
+  margin: 0.34rem 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .coc7-card-buttons
+  > * {
+  min-width: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .coc7-card-buttons
+  button {
+  width: 100% !important;
+  min-height: 1.82rem !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0.24rem 0.48rem !important;
+  border: 1px solid rgba(var(--evil-generic-accent-rgb), 0.52) !important;
+  border-radius: 4px !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(var(--evil-generic-accent-rgb), 0.13),
+      rgba(0, 0, 0, 0.18)
+    ) !important;
+  color: var(--evil-generic-text) !important;
+  box-shadow: none !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  text-shadow: none !important;
+  white-space: normal !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .coc7-card-buttons
+  button:hover,
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .coc7-card-buttons
+  button:focus-visible {
+  border-color: rgba(var(--evil-generic-accent-rgb), 0.82) !important;
+  background: rgba(var(--evil-generic-accent-rgb), 0.18) !important;
+  color: #f0e8d8 !important;
+  box-shadow: 0 0 0 1px rgba(var(--evil-generic-accent-rgb), 0.10) !important;
+}
+
+/* Compatibilité visuelle avec CoC7 QoL Improvements : son marquage GM-only
+   reste visible, mais il ne doit plus imposer un grand pavé de fond autour du
+   bouton dans une carte Evilbram. */
+.chat-message.evil-coc7-generic-card
+  > .message-content
+  .coc7-card-buttons.coc7qol-gm-only {
+  padding: 0.22rem 0 0.22rem 0.42rem !important;
+  border: 0 !important;
+  border-left: 2px solid var(--coc7qol-gm-accent, crimson) !important;
+  background: rgba(220, 20, 60, 0.045) !important;
+  box-shadow: none !important;
+}
+

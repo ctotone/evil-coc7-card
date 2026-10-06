@@ -1,3 +1,9 @@
+## 1.3.4
+
+- Stabilise l’affichage des cartes de jets génériques (`/r`, etc.) en thème clair comme sombre.
+- Harmonise le bouton CoC7 « Définir comme dégâts/soin », y compris lorsqu’il est injecté après le rendu initial.
+- Améliore la coexistence visuelle avec le marquage MJ de CoC7 QoL Improvements.
+
 ## 1.3.3
 
 - Corrige une fuite d’informations sur les jets privés et aveugles : le module respecte désormais la visibilité effective du contenu définie par Foundry et ne reconstruit plus les données cachées depuis les flags CoC7.
