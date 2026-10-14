@@ -1,3 +1,23 @@
+## ☕ Support the Developer / Soutenir le développeur
+
+### 🇬🇧 English
+**Evilbram CoC7 Chat Card Improvements** is a free community module for Foundry VTT, designed to improve the readability and presentation of chat cards in Call of Cthulhu 7th Edition.
+If you enjoy using this module and would like to support my work on Foundry VTT systems and modules, you can buy me a coffee!
+Your support is entirely optional, but always appreciated. Thank you!
+
+### 🇫🇷 Français
+**Evilbram – Amélioration cartes CoC7** est un module communautaire gratuit pour Foundry VTT, conçu pour améliorer la lisibilité et la présentation des cartes de chat de L'Appel de Cthulhu 7e édition.
+Si vous appréciez ce module et souhaitez soutenir mon travail sur mes différents systèmes et modules Foundry VTT, vous pouvez m'offrir un café !
+Votre soutien est entièrement facultatif, mais toujours très apprécié. Merci !
+
+<p align="center">
+  <a href="https://ko-fi.com/evilbram">
+    <img src="https://storage.ko-fi.com/cdn/kofi5.png" alt="Support Evilbram on Ko-fi" height="45">
+  </a>
+</p>
+
+
+
 # Amélioration Roll CoC7
 
 Ce module améliore l'apparence des cartes de chat du système **Call of Cthulhu 7th Edition** dans Foundry VTT.
