@@ -1,3 +1,8 @@
+## 1.3.5
+
+- Correction de l’affichage des résultats de tables renvoyant un Document Foundry (par exemple une Phobie ou une Manie).
+- Les liens de Documents ne sont plus compressés verticalement dans les résultats de RollTable.
+
 ## 1.3.4
 
 - Stabilise l’affichage des cartes de jets génériques (`/r`, etc.) en thème clair comme sombre.

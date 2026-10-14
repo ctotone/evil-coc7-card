@@ -10609,3 +10609,41 @@ html[lang^="fr"]
   box-shadow: none !important;
 }
 
+
+
+/* ========================================================================
+ * TEST — Résultats de RollTable contenant un lien Document
+ *
+ * Le DOM réel de Foundry est :
+ *   ul.table-results > li.flexrow > img + a.content-link
+ *
+ * Le `flexrow` natif peut comprimer le lien Document jusqu'à sa largeur
+ * minimale. On conserve l'image native et on donne au lien tout l'espace
+ * restant, sans modifier le comportement du Document ni les autres liens.
+ * ===================================================================== */
+
+.chat-message.evil-coc7-generic-card
+  .table-results
+  > li.flexrow {
+  flex-wrap: nowrap !important;
+  align-items: center;
+}
+
+.chat-message.evil-coc7-generic-card
+  .table-results
+  > li.flexrow
+  > img {
+  flex: 0 0 auto !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  .table-results
+  > li.flexrow
+  > .evil-coc7-document-link {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100%;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
