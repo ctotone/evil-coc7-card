@@ -26,7 +26,10 @@
   ],
   "authors": [
     {
-      "name": "Evilbram"
+      "name": "Evilbram",
+      "url": "https://github.com/ctotone",
+      "email": "ctotone@gmail.com",
+      "discord": "evilbram"
     }
   ],
   "url": "https://github.com/ctotone/evil-coc7-card",
