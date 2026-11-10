@@ -1117,7 +1117,7 @@
   line-height: 1.3;
 }
 
-.evil-coc7-melee-description .coc7-formatted-text {
+.evil-coc7-melee-description .overflowable {
   color: inherit;
 }
 
@@ -10612,7 +10612,7 @@ html[lang^="fr"]
 
 
 /* ========================================================================
- * TEST — Résultats de RollTable contenant un lien Document
+ * Résultats de RollTable contenant un lien Document
  *
  * Le DOM réel de Foundry est :
  *   ul.table-results > li.flexrow > img + a.content-link
@@ -10646,4 +10646,62 @@ html[lang^="fr"]
   max-width: 100%;
   word-break: normal;
   overflow-wrap: break-word;
+}
+
+/* Résultat textuel de RollTable (CoC7 9.x) : le DOM réel contient
+   img + strong.name + div.description. Le nom conserve sa largeur naturelle
+   et seule la description prend tout l'espace restant. Cela évite le partage
+   50/50 qui comprimait la description dans une colonne étroite. */
+.chat-message.evil-coc7-generic-card
+  .table-results
+  > li.flexrow
+  > strong.name {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 34%;
+  margin-right: 0.45rem;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.chat-message.evil-coc7-generic-card
+  .table-results
+  > li.flexrow
+  > .description {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* Les inline rolls intégrés dans un résultat de table doivent rester lisibles
+   sur le fond sombre de nos cartes, indépendamment du thème CoC7 actif. */
+.chat-message.evil-coc7-generic-card
+  .table-results
+  .inline-roll {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.18rem;
+  max-width: 100%;
+  margin: 0 0.08rem !important;
+  padding: 0.02rem 0.22rem !important;
+  border: 1px solid rgba(var(--evil-generic-accent-rgb), 0.34) !important;
+  border-radius: 3px !important;
+  background: rgba(var(--evil-generic-accent-rgb), 0.08) !important;
+  color: var(--evil-generic-text) !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+.chat-message.evil-coc7-generic-card
+  .table-results
+  .inline-roll
+  > i {
+  flex: 0 0 auto;
+  color: var(--evil-generic-accent) !important;
 }

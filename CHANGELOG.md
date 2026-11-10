@@ -1,3 +1,14 @@
+## 1.4.0
+
+- Mise à jour de compatibilité pour **Call of Cthulhu 7th Edition / CoC7 9.x**.
+- Adaptation des cartes de préparation de mêlée à la nouvelle structure HTML de CoC7 9.x.
+- Adaptation des cartes de préparation de tir à distance afin de distinguer correctement la ligne de cible du bloc de réglages.
+- Prise en charge de la nouvelle classe de description d’arme `.overflowable` introduite par CoC7 9.x.
+- Stabilisation des résultats textuels de RollTable (nom + description) et des jets intégrés (`.inline-roll`) avec les nouveaux styles clair/sombre de CoC7 9.x.
+- La dépendance minimale du module passe à **CoC7 9.0**.
+- Pour un monde utilisant encore **CoC7 8.x**, utiliser la version **1.3.5** du module.
+- Aucun changement de règles, de jets, de permissions ou de logique de jeu CoC7.
+
 ## 1.3.5
 
 - Correction de l’affichage des résultats de tables renvoyant un Document Foundry (par exemple une Phobie ou une Manie).

@@ -28,11 +28,12 @@ Il modifie uniquement la présentation visuelle des résultats dans le chat et n
 
 - **Foundry VTT minimum : v13**
 - **Foundry VTT vérifié : v14**
-- **Call of Cthulhu 7th Edition (CoC7) minimum : 8.15**
+- **Call of Cthulhu 7th Edition (CoC7) : branche 9.x**
+- **CoC7 minimum pour le module 1.4.0 : 9.0**
 
-> La version minimale **CoC7 8.15** est importante : le module s'appuie sur la structure des cartes de chat et des données produites par cette génération du système.
+> À partir de la version **1.4.0**, le module suit la structure des cartes de chat de **CoC7 9.x**.
 
-Les versions de CoC7 antérieures à 8.15 ne sont donc pas prises en charge.
+Pour un monde utilisant encore **CoC7 8.x**, utilisez la version **1.3.5** du module. La branche 1.4.x n’a pas vocation à maintenir la compatibilité avec CoC7 8.x.
 
 ## Fonctionnement
 

@@ -1822,13 +1822,18 @@ function decorateRangedShotsPreparation(rangedShots) {
 function decorateRangedTargetOption(targetOption) {
   targetOption.classList.add("evil-coc7-ranged-target-option");
 
-  const targetName = targetOption.querySelector(":scope > .coc7-target-name");
+  // CoC7 9.x : la ligne de cible est désormais un `.coc7-chat-content`
+  // distinct du bloc de réglages MJ. On les cible séparément pour éviter
+  // que la ligne « Cible » soit traitée comme un panneau de contrôles.
+  const targetName = targetOption.querySelector(
+    ":scope > .coc7-chat-content:not(.keeper-only-block):not(.flexcol)"
+  );
   if (targetName) {
     targetName.classList.add("evil-coc7-ranged-target-name");
   }
 
   const keeperContent = targetOption.querySelector(
-    ":scope > .coc7-chat-content"
+    ":scope > .keeper-only-block.coc7-chat-content.flexcol"
   );
 
   if (keeperContent) {
@@ -3771,7 +3776,11 @@ function decorateMeleeInitiatorMessage(message, html, content) {
   );
   const primarySkill = skills[0] ?? { name: "", value: "" };
 
-  const nativeTargetLabel = content.querySelector(":scope > .coc7-target-name label");
+  // CoC7 9.x : la ligne de cible n'utilise plus `.coc7-target-name` mais
+  // un `.coc7-chat-content` simple, distinct des sections de réglages flexcol.
+  const nativeTargetLabel = content.querySelector(
+    ":scope > .coc7-chat-content:not(.flexcol) > label"
+  );
   const targetName =
     nativeTargetLabel?.textContent
       ?.replace(/\s+/g, " ")
@@ -3827,7 +3836,7 @@ function decorateMeleeInitiatorMessage(message, html, content) {
   }
 
   const nativeContentSections = [
-    ...content.querySelectorAll(":scope > .coc7-chat-content")
+    ...content.querySelectorAll(":scope > .coc7-chat-content.flexcol")
   ];
 
   for (const section of nativeContentSections) {
@@ -3868,7 +3877,9 @@ function decorateMeleeInitiatorMessage(message, html, content) {
 
   nativeHeader.classList.add("evil-coc7-native-hidden");
 
-  const nativeTargetRow = content.querySelector(":scope > .coc7-target-name");
+  const nativeTargetRow = content.querySelector(
+    ":scope > .coc7-chat-content:not(.flexcol)"
+  );
   if (nativeTargetRow) {
     nativeTargetRow.classList.add("evil-coc7-native-hidden");
   }
