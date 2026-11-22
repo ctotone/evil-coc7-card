@@ -22,22 +22,22 @@ Votre soutien est entièrement facultatif, mais toujours très apprécié. Merci
 
 Ce module améliore l'apparence des cartes de chat du système **Call of Cthulhu 7th Edition** dans Foundry VTT.
 
-Il modifie uniquement la présentation visuelle des résultats dans le chat et ne change ni les règles, ni les jets, ni la logique du système CoC7.
+Il améliore la présentation des résultats et ajoute des effets visuels et sonores pour les critiques et les maladresses. Les jets et les règles restent gérés par CoC7.
 
 ## Compatibilité
 
 - **Foundry VTT minimum : v13**
 - **Foundry VTT vérifié : v14**
 - **Call of Cthulhu 7th Edition (CoC7) : branche 9.x**
-- **CoC7 minimum pour la branche 1.4.x : 9.0**
+- **CoC7 minimum : 9.0**
 
 > À partir de la version **1.4.0**, le module suit la structure des cartes de chat de **CoC7 9.x**.
 
-Pour un monde utilisant encore **CoC7 8.x**, utilisez la version **1.3.5** du module. La branche 1.4.x n’a pas vocation à maintenir la compatibilité avec CoC7 8.x.
+Pour un monde utilisant encore **CoC7 8.x**, utilisez la version **1.3.5** du module.
 
 ## Fonctionnement
 
-Le module conserve le fonctionnement natif de CoC7 et applique uniquement une nouvelle présentation aux cartes de chat.
+Le module conserve le fonctionnement natif de CoC7 et habille les cartes de chat. Sur une réussite critique ou une maladresse, une carte animée et sonore affiche le résultat. Le MJ peut désactiver ces cartes dans les paramètres du module. Elles sont activées par défaut.
 
 Les mécaniques du système restent gérées par CoC7, notamment :
 

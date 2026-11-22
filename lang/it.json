@@ -1,4 +1,6 @@
 {
+  "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Attiva le carte di successo critico e fallimento critico",
+  "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Le carte di successo critico e fallimento critico sono disattivate in questo mondo.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Conferma risposta",
   "EVILCOC7CARD.Action.InflictDamage": "Infliggi danni",
   "EVILCOC7CARD.Action.RollAttack": "Tira l’attacco",

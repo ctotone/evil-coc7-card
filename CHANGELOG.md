@@ -1,18 +1,13 @@
-## 1.4.1
+## 1.5.0
 
-- Réduction générale de la hauteur des cartes de chat afin d’afficher davantage de jets sans défilement excessif.
-- Compactage des jets standards : header, portraits, zone de résultat, verdicts et espacements verticaux réduits.
-- Compactage des cartes de mêlée, de résolution et de dégâts, avec des boutons d’action plus courts et une hiérarchie visuelle conservée.
-- Préparation de mêlée attaquant simplifiée : suppression du bloc redondant « valeur + ATTAQUE » ; la ligne de cible et son portrait suffisent avant le lancement du jet.
-- Carte défenseur simplifiée : les quatre réactions sont regroupées sur une seule ligne d’icônes avec libellé au survol.
-- Le survol d’« Esquive » affiche également sa valeur réelle, par exemple « Esquive (40%) ».
-- Suppression de l’affichage anticipé d’une valeur d’Esquive avant qu’une réaction ne soit choisie.
-- Suppression du bloc central redondant « valeur + réaction » après sélection : la réaction, la compétence et le pourcentage sont déjà repris par l’action finale.
-- Suppression du libellé intermédiaire « DÉFENSE » et réduction des médaillons de réaction pour gagner de la hauteur.
-- Compactage des actions « Révéler le résultat », dégâts à distance et bouton principal de préparation du tir.
-- Aucun changement de règles, de jets, de permissions ou de logique de jeu CoC7.
+- Ajout de cartes plein écran animées et sonores pour les réussites critiques et les maladresses de CoC7.
+- Les cartes affichent le résultat du dé, le libellé du jet et, quand il est disponible, le portrait du personnage qui a lancé.
+- Les effets respectent la visibilité du résultat et se synchronisent avec Dice So Nice lorsque son animation est détectée.
+- Ajout d’un réglage de partie pour activer ou désactiver ces cartes. Il est activé par défaut et traduit dans les six langues du module.
 
 ## 1.4.0
+- Compactage de la carte défenseur : suppression du libellé intermédiaire « DÉFENSE » et réduction du médaillon d’état à 2 rem.
+
 - Mise à jour de compatibilité pour **Call of Cthulhu 7th Edition / CoC7 9.x**.
 - Adaptation des cartes de préparation de mêlée à la nouvelle structure HTML de CoC7 9.x.
 - Adaptation des cartes de préparation de tir à distance afin de distinguer correctement la ligne de cible du bloc de réglages.

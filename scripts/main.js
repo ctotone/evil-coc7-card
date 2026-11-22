@@ -1,3 +1,5 @@
+import { observeCriticalCard, registerCriticalOverlay } from "./critical-overlay.js";
+
 const MODULE_ID = "evil-coc7-card";
 const STANDARD_CARD_TYPE = "CoC7Check";
 const MELEE_CARD_TYPE = "CoC7ChatCombatMelee";
@@ -76,6 +78,8 @@ function localizeModule(key, data = {}) {
   ));
 }
 
+registerCriticalOverlay({ detectState });
+
 Hooks.on("renderChatMessageHTML", (message, html) => {
   try {
     if (game.system.id !== "CoC7") return;
@@ -97,6 +101,16 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
     }
 
     const load = message.flags?.CoC7?.load ?? {};
+
+    try {
+      observeCriticalCard(message, content, load, {
+        detectState,
+        resolveCheckName,
+        resolveUuidDocument
+      });
+    } catch (error) {
+      console.warn(`${MODULE_ID} | Impossible de lire le résultat pour l'animation.`, error);
+    }
 
     if (load.as === STANDARD_CARD_TYPE && !load.isStandby) {
       const rolls = [...content.querySelectorAll(".dice-roll")];

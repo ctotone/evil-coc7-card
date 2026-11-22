@@ -10707,8 +10707,10 @@ html[lang^="fr"]
 }
 
 /* ========================================================================
- * COMPACTAGE DES CARTES — 1.4.1
- * Réduction de la hauteur des cartes sans modification de la logique CoC7.
+ * COMPACT LAYOUT TEST V1 — 2026-11-22
+ * Première proposition de réduction de hauteur des cartes.
+ * Aucun comportement CoC7 n'est modifié : uniquement composition visuelle,
+ * sauf les réactions défenseur affichées sous forme de 4 icônes + tooltip.
  * ===================================================================== */
 
 /* Rapproche légèrement les messages successifs dans le chat. */
@@ -11189,7 +11191,7 @@ html[lang^="fr"]
 }
 
 
-/* Ajustements fins du compactage — 1.4.1 */
+/* Ajustements utilisateur — compact layout V2 */
 .evil-coc7-ranged-shot-value {
   color: var(--evil-shot-accent);
   font-family: Georgia, "Times New Roman", serif;
@@ -11214,7 +11216,7 @@ html[lang^="fr"]
   background: rgba(0, 0, 0, 0.14);
 }
 
-/* Actions compactes — 1.4.1 */
+/* Ajustements utilisateur — compact layout V3 */
 .chat-message.evil-coc7-melee-attacker-result-card .evil-coc7-melee-attacker-reveal-area button[data-action="revealCheck"] {
   appearance: none !important;
   -webkit-appearance: none !important;
@@ -11277,7 +11279,7 @@ html[lang^="fr"]
 
 
 /* ========================================================================
- * État défenseur compact — 1.4.1
+ * Compact layout V5 — état défenseur
  * Le contexte "Défense" est implicite : on conserve uniquement le médaillon
  * de réaction et son libellé utile (Esquive, Riposte, etc.).
  * ===================================================================== */
@@ -11289,11 +11291,297 @@ html[lang^="fr"]
 }
 
 /* ========================================================================
- * Icône du header défenseur — 1.4.1
+ * Compact layout V6 — icône header défenseur
  * ===================================================================== */
 
 .chat-message.evil-coc7-melee-defender-card
   .evil-coc7-defender-header-icon.evil-coc7-reaction-art-icon {
   width: 2.5rem !important;
   height: 2.5rem !important;
+}
+
+/* Critical and fumble event cards */
+.evil-coc7-critical-overlay {
+  --event-color: #87ed62;
+  --event-heading: #5bd529;
+  --event-dark: #152212;
+  --event-art: url("../assets/critique_roll.webp");
+  --event-entry: evil-coc7-critical-enter 680ms cubic-bezier(0.18, 0.72, 0.28, 1) both;
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 1rem;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.evil-coc7-critical-overlay:focus,
+.evil-coc7-critical-overlay:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.evil-coc7-critical-overlay--fumble {
+  --event-color: #ff706d;
+  --event-heading: #ff4741;
+  --event-dark: #300f15;
+  --event-art: url("../assets/maladresse_roll.webp");
+  --event-entry: evil-coc7-fumble-enter 420ms 45ms ease-out both;
+}
+
+.evil-coc7-critical-overlay:not([open]) {
+  display: none;
+}
+
+.evil-coc7-critical-overlay::backdrop {
+  background: transparent;
+}
+
+.evil-coc7-critical-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, var(--event-dark), #090909ed);
+  animation: evil-coc7-event-backdrop 300ms ease-out both;
+}
+
+/* The effects sit under the card and play once when the dialog opens. */
+.evil-coc7-critical-overlay::before,
+.evil-coc7-critical-overlay::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.evil-coc7-critical-overlay::before {
+  inset: -12%;
+  background: radial-gradient(ellipse closest-side,
+    rgb(112 234 65 / 55%), rgb(80 158 36 / 22%) 55%, transparent);
+  animation: evil-coc7-critical-halo 1600ms ease-out both;
+}
+
+.evil-coc7-critical-overlay::after {
+  inset: -25% -15%;
+  background:
+    radial-gradient(ellipse at center, rgb(155 237 105 / 18%), transparent 65%),
+    linear-gradient(112deg, transparent 38%, rgb(164 255 104 / 25%) 49%,
+      rgb(210 255 172 / 34%) 51%, transparent 62%);
+  mask-image: radial-gradient(ellipse at center, #000 15%, transparent 69%);
+  animation: evil-coc7-critical-rays 1450ms ease-out both;
+}
+
+.evil-coc7-critical-overlay--fumble::before {
+  background: radial-gradient(ellipse closest-side,
+    rgb(234 41 36 / 57%), rgb(145 12 24 / 32%) 58%, transparent);
+  animation: evil-coc7-fumble-halo 1000ms ease-out both;
+}
+
+.evil-coc7-critical-overlay--fumble::after {
+  inset: 50% auto auto 50%;
+  width: 140vmax;
+  aspect-ratio: 1;
+  background: radial-gradient(circle closest-side,
+    transparent 69%, rgb(180 24 40 / 12%) 77%, rgb(255 75 65 / 40%) 84%,
+    rgb(140 12 27 / 18%) 91%, transparent);
+  mask-image: none;
+  animation: evil-coc7-fumble-wave 760ms ease-out both;
+}
+
+.evil-coc7-critical-ambience {
+  position: absolute;
+  z-index: 0;
+  inset: -25%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 28% 38%, rgb(151 230 94 / 44%), transparent 36%),
+    radial-gradient(ellipse at 72% 65%, rgb(81 172 52 / 35%), transparent 35%),
+    linear-gradient(115deg, transparent 39%, rgb(141 238 90 / 23%) 49%,
+      rgb(183 251 126 / 31%) 52%, transparent 62%);
+  animation:
+    evil-coc7-ambience-fade 650ms 350ms ease-out both,
+    evil-coc7-ambience-drift 4.5s ease-in-out infinite alternate;
+}
+
+.evil-coc7-critical-overlay--fumble > .evil-coc7-critical-ambience {
+  background:
+    radial-gradient(ellipse 43% 22% at 35% 66%, rgb(214 39 53 / 51%), transparent 85%),
+    radial-gradient(ellipse 34% 19% at 67% 32%, rgb(167 25 44 / 48%), transparent 85%),
+    linear-gradient(156deg, transparent 45%, rgb(119 13 32 / 40%) 52%, transparent 58%);
+  animation:
+    evil-coc7-ambience-fade 600ms 300ms ease-out both,
+    evil-coc7-fumble-drift 5s ease-in-out infinite alternate;
+}
+
+.evil-coc7-critical-event-card {
+  position: relative;
+  z-index: 1;
+  width: min(24rem, calc(100vw - 2rem), calc(100dvh - 2rem));
+  aspect-ratio: 1;
+  container-type: inline-size;
+  box-sizing: border-box;
+  border-radius: 5%;
+  background: var(--event-dark) var(--event-art) center / contain no-repeat;
+  box-shadow: 0 0 2rem color-mix(in srgb, var(--event-color) 38%, transparent);
+  animation: var(--event-entry);
+  text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  overflow: hidden;
+}
+
+.evil-coc7-critical-event-card::before,
+.evil-coc7-critical-event-card::after {
+  content: "";
+  position: absolute;
+  inset-inline: 15%;
+  height: max(1px, 0.5cqw);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--event-heading) 60%, transparent);
+}
+
+.evil-coc7-critical-event-card::before { top: 6%; }
+.evil-coc7-critical-event-card::after { top: 55%; }
+
+.evil-coc7-critical-event-card h2 {
+  position: absolute;
+  inset: 8% 4% auto;
+  min-height: 9%;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  border: 0;
+  color: var(--event-heading);
+  font: bold 7cqw/1 Georgia, "Times New Roman", serif;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  -webkit-text-stroke: max(1px, 0.45cqw) #080808;
+  paint-order: stroke fill;
+}
+
+.evil-coc7-critical-event-card p {
+  position: absolute;
+  inset: 18.5% 9% auto;
+  margin: 0;
+  color: var(--event-heading);
+  font: bold 5cqw/1.1 Georgia, "Times New Roman", serif;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-text-stroke: max(1px, 0.35cqw) #080808;
+  paint-order: stroke fill;
+}
+
+.evil-coc7-critical-event-card strong {
+  position: absolute;
+  inset: 24% 5% 46%;
+  display: grid;
+  place-items: center;
+  color: var(--event-color);
+  font: bold 25cqw / 0.9 Georgia, "Times New Roman", serif;
+  text-shadow: 0 0 0.3em currentColor;
+}
+
+.evil-coc7-critical-event-card img {
+  position: absolute;
+  inset: 62% auto auto 35%;
+  width: 30%;
+  height: 30%;
+  border: max(1px, 0.45cqw) solid var(--event-color);
+  border-radius: 50%;
+  object-fit: cover;
+  background: #0a0a0a;
+  box-shadow: 0 0.8cqw 3cqw #0009;
+}
+
+@keyframes evil-coc7-event-backdrop {
+  from { opacity: 0; }
+}
+
+@keyframes evil-coc7-critical-enter {
+  from { opacity: 0; transform: translateY(0.8rem) scale(0.91); }
+  72% { opacity: 1; }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes evil-coc7-fumble-enter {
+  from { opacity: 0; transform: translateY(-1.1rem) scale(1.07); }
+  38% { opacity: 1; transform: translate(0.18rem, 0.1rem) scale(0.985); }
+  61% { transform: translateX(-0.15rem) scale(1.008); }
+  82% { transform: translateX(0.05rem); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes evil-coc7-critical-halo {
+  from { opacity: 0; transform: scale(0.65); }
+  36% { opacity: 0.85; }
+  to { opacity: 0; transform: scale(1.22); }
+}
+
+@keyframes evil-coc7-critical-rays {
+  from { opacity: 0; transform: translate(-9%, 4%) rotate(-8deg); }
+  43% { opacity: 0.7; }
+  to { opacity: 0; transform: translate(10%, -5%) rotate(5deg); }
+}
+
+@keyframes evil-coc7-fumble-halo {
+  from { opacity: 0; transform: scale(0.5); }
+  20% { opacity: 0.72; }
+  to { opacity: 0; transform: scale(1.35); }
+}
+
+@keyframes evil-coc7-fumble-wave {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.13); }
+  25% { opacity: 0.78; }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes evil-coc7-ambience-fade {
+  from { opacity: 0; }
+  to { opacity: 0.9; }
+}
+
+@keyframes evil-coc7-ambience-drift {
+  from { transform: translate(-13%, 4%) rotate(-5deg); }
+  to { transform: translate(13%, -5%) rotate(5deg); }
+}
+
+@keyframes evil-coc7-fumble-drift {
+  from { transform: translate(12%, -5%) rotate(4deg) scale(1.06); }
+  to { transform: translate(-12%, 7%) rotate(-4deg) scale(1.02); }
+}
+
+.evil-coc7-critical-overlay--pending::before,
+.evil-coc7-critical-overlay--pending::after,
+.evil-coc7-critical-overlay--pending > .evil-coc7-critical-background,
+.evil-coc7-critical-overlay--pending > .evil-coc7-critical-ambience,
+.evil-coc7-critical-overlay--pending > .evil-coc7-critical-event-card {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .evil-coc7-critical-overlay:not(.evil-coc7-critical-overlay--preview) > .evil-coc7-critical-background,
+  .evil-coc7-critical-overlay:not(.evil-coc7-critical-overlay--preview) > .evil-coc7-critical-event-card {
+    animation: none;
+  }
+
+  .evil-coc7-critical-overlay:not(.evil-coc7-critical-overlay--preview)::before,
+  .evil-coc7-critical-overlay:not(.evil-coc7-critical-overlay--preview)::after,
+  .evil-coc7-critical-overlay:not(.evil-coc7-critical-overlay--preview) > .evil-coc7-critical-ambience {
+    display: none;
+  }
 }

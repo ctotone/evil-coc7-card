@@ -1,4 +1,6 @@
 {
+  "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Activer les cartes de réussite et d’échec critique",
+  "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Les cartes de réussite et d’échec critique sont désactivées dans ce monde.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Confirmer la réponse",
   "EVILCOC7CARD.Action.InflictDamage": "Infliger les dégâts",
   "EVILCOC7CARD.Action.RollAttack": "Lancer l’attaque",

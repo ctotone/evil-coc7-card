@@ -1,4 +1,6 @@
 {
+  "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Karten für kritische Erfolge und Patzer aktivieren",
+  "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Die Karten für kritische Erfolge und Patzer sind in dieser Welt deaktiviert.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Reaktion bestätigen",
   "EVILCOC7CARD.Action.InflictDamage": "Schaden zufügen",
   "EVILCOC7CARD.Action.RollAttack": "Angriff würfeln",

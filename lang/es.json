@@ -1,4 +1,6 @@
 {
+  "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Activar las cartas de éxito crítico y pifia",
+  "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Las cartas de éxito crítico y pifia están desactivadas en este mundo.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Confirmar respuesta",
   "EVILCOC7CARD.Action.InflictDamage": "Infligir daño",
   "EVILCOC7CARD.Action.RollAttack": "Tirar ataque",

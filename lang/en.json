@@ -1,4 +1,6 @@
 {
+  "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Enable critical success and fumble cards",
+  "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Critical success and fumble cards are disabled in this world.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Confirm response",
   "EVILCOC7CARD.Action.InflictDamage": "Inflict damage",
   "EVILCOC7CARD.Action.RollAttack": "Roll attack",
