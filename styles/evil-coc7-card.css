@@ -4899,7 +4899,7 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   .evil-coc7-ranged-target-settings
   > label {
   margin: 0.32rem 0 0.16rem !important;
-  font-size: var(--font-size-8) !important;
+  font-size: 0.65rem !important;
 }
 
 .chat-message.evil-coc7-ranged-preparation-card
@@ -4929,7 +4929,7 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
 .chat-message.evil-coc7-ranged-preparation-card
   .evil-coc7-ranged-status-tags
   .tag {
-  font-size: var(--font-size-8) !important;
+  font-size: 0.65rem !important;
   padding: 0.08rem 0.34rem !important;
 }
 
@@ -5363,7 +5363,7 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   border-radius: 999px !important;
   background: rgba(var(--evil-coc7-accent-rgb), 0.055) !important;
   color: #aaa398 !important;
-  font-size: var(--font-size-8) !important;
+  font-size: 0.65rem !important;
 }
 
 /* Results container ----------------------------------------------------- */
@@ -6364,7 +6364,7 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   border-radius: 999px !important;
   background: rgba(var(--evil-coc7-accent-rgb), 0.06) !important;
   color: #aaa398 !important;
-  font-size: var(--font-size-8) !important;
+  font-size: 0.65rem !important;
 }
 
 /* Actor blocks ---------------------------------------------------------- */
@@ -6518,7 +6518,7 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   border-radius: 999px !important;
   background: rgba(var(--evil-opposed-accent), 0.045) !important;
   color: #9f998f !important;
-  font-size: var(--font-size-8) !important;
+  font-size: 0.65rem !important;
 }
 
 /* Waiting / Roll -------------------------------------------------------- */
@@ -8063,7 +8063,7 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   border-radius: 999px !important;
   background: rgba(var(--evil-combined-accent), 0.045) !important;
   color: #a49d91 !important;
-  font-size: var(--font-size-8) !important;
+  font-size: 0.65rem !important;
 }
 
 /* Remove check ---------------------------------------------------------- */
@@ -8995,7 +8995,7 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   min-height: 0 !important;
   padding: 0.06rem 0.28rem !important;
   font-family: inherit !important;
-  font-size: var(--font-size-8) !important;
+  font-size: 0.65rem !important;
   font-weight: 400 !important;
   letter-spacing: normal !important;
   text-transform: none !important;
@@ -10704,4 +10704,596 @@ html[lang^="fr"]
   > i {
   flex: 0 0 auto;
   color: var(--evil-generic-accent) !important;
+}
+
+/* ========================================================================
+ * COMPACTAGE DES CARTES — 1.4.1
+ * Réduction de la hauteur des cartes sans modification de la logique CoC7.
+ * ===================================================================== */
+
+/* Rapproche légèrement les messages successifs dans le chat. */
+.chat-message.evil-coc7-card,
+.chat-message.evil-coc7-generic-card {
+  margin-top: 0.28rem !important;
+  margin-bottom: 0.28rem !important;
+}
+
+/* ------------------------------------------------------------------------
+ * Jet standard — header + résultat sensiblement plus compacts
+ * --------------------------------------------------------------------- */
+.evil-coc7-card-header {
+  grid-template-columns: 2.85rem minmax(0, 1fr) !important;
+  gap: 0.56rem !important;
+  padding: 0.5rem 0.76rem 0.14rem 0.72rem !important;
+}
+
+.evil-coc7-card-portrait-wrap {
+  width: 2.7rem !important;
+  height: 2.7rem !important;
+}
+
+.evil-coc7-card-actor {
+  font-size: 1.08rem !important;
+  line-height: 1.02 !important;
+}
+
+.evil-coc7-card-check-line {
+  margin-top: 0.05rem !important;
+  font-size: 0.86rem !important;
+  line-height: 1.08 !important;
+}
+
+.evil-coc7-card-difficulty {
+  gap: 0.28rem !important;
+  margin-top: 0.08rem !important;
+  font-size: var(--font-size-10) !important;
+  line-height: 1.05 !important;
+}
+
+.evil-coc7-result-display {
+  grid-template-columns: minmax(0, 1fr) minmax(5.25rem, 0.68fr) !important;
+  gap: 0.4rem !important;
+  min-height: 5rem !important;
+  padding: 0.05rem 0.78rem 0.5rem !important;
+}
+
+.evil-coc7-result-number {
+  font-size: clamp(2.18rem, 9.6vw, 3.5rem) !important;
+}
+
+.evil-coc7-result-number.evil-coc7-result-number-3digits {
+  font-size: clamp(2.65rem, 11.6vw, 3.7rem) !important;
+}
+
+.evil-coc7-verdict-icon {
+  width: 2rem !important;
+  height: 2rem !important;
+  margin-bottom: 0.18rem !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.16),
+    0 0 9px rgba(var(--evil-roll-accent-rgb), 0.05) !important;
+}
+
+.evil-coc7-verdict-label {
+  font-size: 0.9rem !important;
+  line-height: 1 !important;
+}
+
+.evil-coc7-verdict-ornament {
+  width: 3.25rem !important;
+  margin-top: 0.24rem !important;
+}
+
+/* ------------------------------------------------------------------------
+ * Mêlée — préparation attaquant
+ * --------------------------------------------------------------------- */
+.evil-coc7-melee-layout {
+  padding-bottom: 0.42rem !important;
+}
+
+.evil-coc7-melee-header {
+  grid-template-columns: 2.85rem minmax(0, 1fr) 2.4rem !important;
+  gap: 0.5rem !important;
+  padding: 0.46rem 0.62rem 0.34rem 0.68rem !important;
+}
+
+.evil-coc7-melee-actor-portrait {
+  width: 2.75rem !important;
+  height: 2.75rem !important;
+}
+
+.evil-coc7-melee-weapon-icon {
+  width: 2.3rem !important;
+  height: 2.3rem !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.16),
+    0 0 8px rgba(var(--evil-coc7-accent-rgb), 0.05) !important;
+}
+
+.evil-coc7-melee-weapon-icon > i {
+  font-size: 1.02rem !important;
+}
+
+.evil-coc7-melee-target-row {
+  gap: 0.4rem !important;
+  min-height: 1.75rem !important;
+  margin: 0.04rem 0.64rem 0 !important;
+  padding: 0.27rem 0.08rem 0.18rem !important;
+}
+
+.evil-coc7-melee-target-text {
+  font-size: 0.86rem !important;
+  line-height: 1.08 !important;
+}
+
+.evil-coc7-melee-target-portrait-wrap {
+  width: 1.55rem !important;
+  height: 1.55rem !important;
+}
+
+.chat-message.evil-coc7-melee-initiator-card .evil-coc7-melee-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(4.35rem, 0.68fr) !important;
+  min-height: 4.1rem !important;
+  padding: 0.02rem 0.6rem 0.22rem !important;
+}
+
+.chat-message.evil-coc7-melee-initiator-card .evil-coc7-melee-hero-number {
+  font-size: clamp(2.2rem, 9.8vw, 3.05rem) !important;
+}
+
+.chat-message.evil-coc7-melee-initiator-card .evil-coc7-melee-hero-percent {
+  font-size: 1.18rem !important;
+}
+
+.chat-message.evil-coc7-melee-initiator-card .evil-coc7-melee-state-icon {
+  width: 1.95rem !important;
+  height: 1.95rem !important;
+  margin-bottom: 0.14rem !important;
+}
+
+.chat-message.evil-coc7-melee-initiator-card .evil-coc7-melee-state-label {
+  font-size: 0.92rem !important;
+}
+
+.evil-coc7-melee-controls {
+  gap: 0.32rem !important;
+  padding: 0.36rem 0.6rem 0 !important;
+}
+
+.chat-message.evil-coc7-melee-initiator-card
+  .evil-coc7-melee-auto-success
+  button,
+.chat-message.evil-coc7-melee-initiator-card
+  .evil-coc7-melee-modifier-section
+  .coc7-card-buttons
+  button {
+  min-height: 1.62rem !important;
+  padding-top: 0.2rem !important;
+  padding-bottom: 0.2rem !important;
+}
+
+.chat-message.evil-coc7-melee-initiator-card .evil-coc7-melee-action-area {
+  padding-top: 0.32rem !important;
+}
+
+.chat-message.evil-coc7-melee-initiator-card .evil-coc7-melee-attack-button {
+  min-height: 2.48rem !important;
+  padding: 0.28rem 0.46rem !important;
+}
+
+.evil-coc7-melee-attack-title {
+  font-size: 0.98rem !important;
+}
+
+.evil-coc7-melee-attack-detail {
+  font-size: var(--font-size-9) !important;
+  line-height: 1.08 !important;
+}
+
+/* ------------------------------------------------------------------------
+ * Défenseur — même compaction + réactions sur UNE ligne d'icônes
+ * --------------------------------------------------------------------- */
+.evil-coc7-melee-defender-layout {
+  padding-bottom: 0.4rem !important;
+}
+
+.evil-coc7-melee-defender-header {
+  grid-template-columns: 2.85rem minmax(0, 1fr) 2.4rem !important;
+  gap: 0.5rem !important;
+  padding: 0.46rem 0.62rem 0.36rem 0.68rem !important;
+}
+
+.evil-coc7-defender-portrait-wrap {
+  width: 2.75rem !important;
+  height: 2.75rem !important;
+}
+
+.evil-coc7-defender-header-icon {
+  width: 2.3rem !important;
+  height: 2.3rem !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.16),
+    0 0 8px rgba(var(--evil-coc7-accent-rgb), 0.05) !important;
+}
+
+.evil-coc7-defender-context {
+  gap: 0.1rem !important;
+  padding: 0.34rem 0.64rem 0.3rem !important;
+}
+
+.evil-coc7-defender-context-line {
+  font-size: var(--font-size-9) !important;
+  line-height: 1.12 !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card .evil-coc7-defender-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(4.35rem, 0.68fr) !important;
+  min-height: 4.05rem !important;
+  padding: 0.02rem 0.6rem 0.22rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card .evil-coc7-defender-hero-number {
+  font-size: clamp(2.18rem, 9.6vw, 3rem) !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card .evil-coc7-defender-hero-percent {
+  font-size: 1.16rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card .evil-coc7-defender-state-icon {
+  width: 1.95rem !important;
+  height: 1.95rem !important;
+  margin-bottom: 0.14rem !important;
+}
+
+.evil-coc7-defender-state-label {
+  font-size: 0.92rem !important;
+}
+
+.evil-coc7-defender-state-detail {
+  margin-top: 0.1rem !important;
+  font-size: 0.65rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-area {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0.32rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-area::before {
+  margin-bottom: 0.02rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-area
+  > .evil-coc7-defender-choice-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 2.25rem !important;
+  height: 2.25rem !important;
+  padding: 0.16rem !important;
+  text-align: center !important;
+}
+
+.evil-coc7-defender-choice-icon {
+  flex: 0 0 1.62rem !important;
+  width: 1.62rem !important;
+  height: 1.62rem !important;
+}
+
+.evil-coc7-defender-choice-label {
+  display: none !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  > .message-content
+  > .evil-coc7-defender-choice-area {
+  margin-top: 0.34rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  > .message-content
+  > .evil-coc7-defender-pool-section {
+  margin-top: 0.28rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  > .message-content
+  > .evil-coc7-defender-action-area {
+  margin-top: 0.28rem !important;
+  margin-bottom: 0.38rem !important;
+}
+
+.evil-coc7-defender-action-area {
+  padding-top: 0.32rem !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card .evil-coc7-defender-roll-button {
+  min-height: 2.42rem !important;
+  padding: 0.27rem 0.44rem !important;
+}
+
+.evil-coc7-defender-roll-title {
+  font-size: 0.98rem !important;
+}
+
+.evil-coc7-defender-roll-detail {
+  font-size: var(--font-size-9) !important;
+  line-height: 1.08 !important;
+}
+
+/* ------------------------------------------------------------------------
+ * Résolution mêlée — participants et verdict raccourcis
+ * --------------------------------------------------------------------- */
+.evil-coc7-melee-resolution-layout {
+  padding-bottom: 0.42rem !important;
+}
+
+.evil-coc7-resolution-header {
+  padding: 0.4rem 0.66rem 0.28rem !important;
+}
+
+.evil-coc7-resolution-participants {
+  gap: 0.32rem !important;
+  padding: 0.36rem 0.66rem 0.3rem !important;
+}
+
+.evil-coc7-resolution-portrait-wrap {
+  flex-basis: 2.08rem !important;
+  width: 2.08rem !important;
+  height: 2.08rem !important;
+}
+
+.evil-coc7-resolution-divider {
+  width: 1.62rem !important;
+  height: 1.62rem !important;
+}
+
+.evil-coc7-resolution-verdict {
+  gap: 0.26rem !important;
+  min-height: 4rem !important;
+  padding: 0.4rem 0.72rem 0.36rem !important;
+}
+
+.evil-coc7-resolution-icon {
+  width: 2.32rem !important;
+  height: 2.32rem !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.14),
+    0 0 9px rgba(var(--evil-coc7-accent-rgb), 0.05) !important;
+}
+
+.evil-coc7-resolution-verdict-text {
+  font-size: 1rem !important;
+  line-height: 1.08 !important;
+}
+
+.evil-coc7-resolution-action {
+  margin: 0 0.68rem !important;
+  padding: 0.26rem 0.42rem !important;
+  font-size: var(--font-size-9) !important;
+}
+
+/* ------------------------------------------------------------------------
+ * Dégâts mêlée — header, preview/résultat et action principale
+ * --------------------------------------------------------------------- */
+.evil-coc7-melee-damage-header {
+  gap: 0.48rem !important;
+  padding: 0.44rem 0.62rem 0.34rem 0.68rem !important;
+}
+
+.evil-coc7-damage-attacker {
+  grid-template-columns: 2.55rem minmax(0, 1fr) !important;
+  gap: 0.48rem !important;
+}
+
+.evil-coc7-damage-attacker-portrait-wrap {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+}
+
+.evil-coc7-damage-weapon-badge {
+  width: 2.15rem !important;
+  height: 2.15rem !important;
+}
+
+.evil-coc7-damage-target {
+  grid-template-columns: minmax(0, 1fr) 2rem !important;
+  gap: 0.32rem !important;
+}
+
+.evil-coc7-damage-target-portrait-wrap {
+  width: 1.95rem !important;
+  height: 1.95rem !important;
+}
+
+.evil-coc7-damage-preview {
+  grid-template-columns: minmax(0, 1fr) minmax(5.15rem, 0.68fr) !important;
+  gap: 0.42rem !important;
+  min-height: 4.55rem !important;
+  padding: 0.24rem 0.7rem 0.3rem !important;
+}
+
+.evil-coc7-damage-preview-value {
+  font-size: clamp(1.85rem, 9.2vw, 3.35rem) !important;
+}
+
+.evil-coc7-damage-preview-icon,
+.evil-coc7-damage-roll-icon {
+  width: 2.3rem !important;
+  height: 2.3rem !important;
+  margin-bottom: 0.16rem !important;
+}
+
+.evil-coc7-damage-preview-label,
+.evil-coc7-damage-roll-label {
+  font-size: 0.94rem !important;
+}
+
+.chat-message.evil-coc7-melee-damage-card
+  .evil-coc7-damage-roll
+  .dice-result {
+  grid-template-columns: minmax(0, 1fr) minmax(5.15rem, 0.68fr) !important;
+  gap: 0.38rem 0.42rem !important;
+  min-height: 4.7rem !important;
+  padding: 0.22rem 0.7rem 0.3rem !important;
+}
+
+.chat-message.evil-coc7-melee-damage-card
+  .evil-coc7-damage-roll
+  .dice-total {
+  font-size: clamp(3.05rem, 13.5vw, 4.3rem) !important;
+}
+
+.chat-message.evil-coc7-melee-damage-card
+  .evil-coc7-damage-description {
+  padding: 0.34rem 0.64rem !important;
+  font-size: var(--font-size-9) !important;
+  line-height: 1.15 !important;
+}
+
+.chat-message.evil-coc7-melee-damage-card
+  .evil-coc7-damage-meta-row {
+  min-height: 1.65rem !important;
+  padding: 0.18rem 0.62rem !important;
+}
+
+.chat-message.evil-coc7-melee-damage-card
+  .evil-coc7-damage-roll-action,
+.chat-message.evil-coc7-melee-damage-card
+  .evil-coc7-damage-apply-action {
+  margin: 0.34rem 0.62rem 0.42rem !important;
+  padding-top: 0.3rem !important;
+}
+
+.chat-message.evil-coc7-melee-damage-card
+  .evil-coc7-damage-roll-action
+  button,
+.chat-message.evil-coc7-melee-damage-card
+  .evil-coc7-damage-apply-action
+  button {
+  min-height: 2.28rem !important;
+  padding: 0.3rem 0.58rem !important;
+  font-size: 0.9rem !important;
+}
+
+/* Les quatre icônes restent sur une seule ligne même dans une sidebar étroite. */
+@media (max-width: 340px) {
+  .chat-message.evil-coc7-melee-defender-card
+    .evil-coc7-defender-choice-area {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+
+/* Ajustements fins du compactage — 1.4.1 */
+.evil-coc7-ranged-shot-value {
+  color: var(--evil-shot-accent);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.18rem, 9.6vw, 4rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(var(--evil-shot-accent-rgb), 0.11);
+}
+
+.evil-coc7-ranged-shot-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.24rem;
+  border: 1px solid rgba(var(--evil-shot-accent-rgb), 0.70);
+  border-radius: 50%;
+  color: var(--evil-shot-accent);
+  background: rgba(0, 0, 0, 0.14);
+}
+
+/* Actions compactes — 1.4.1 */
+.chat-message.evil-coc7-melee-attacker-result-card .evil-coc7-melee-attacker-reveal-area button[data-action="revealCheck"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 2rem !important;
+  padding: 0.48rem 0.8rem !important;
+  border: 1px solid rgba(var(--evil-coc7-accent-rgb), 0.70) !important;
+  border-radius: 6px !important;
+  background-color: rgba(18, 20, 16, 0.96) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(var(--evil-coc7-accent-rgb), 0.10),
+    rgba(0, 0, 0, 0.08) 38%,
+    rgba(0, 0, 0, 0.20)
+  ) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025), 0 2px 7px rgba(0, 0, 0, 0.20) !important;
+  color: #e7dfcf !important;
+  text-shadow: none !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0.01em !important;
+}
+
+.chat-message.evil-coc7-ranged-result-card .evil-coc7-ranged-damage-action button[data-action="roll-range-damage"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 2rem !important;
+  margin: 0 !important;
+  padding: 0.4rem 0.58rem !important;
+  border: 1px solid rgba(var(--evil-coc7-accent-rgb), 0.60) !important;
+  border-radius: 6px !important;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--evil-coc7-accent-rgb), 0.10),
+    rgba(0, 0, 0, 0.17)
+  ) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025), 0 2px 8px rgba(0, 0, 0, 0.18) !important;
+  color: #ddd4c3 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  line-height: 1.08 !important;
+  text-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+.chat-message.evil-coc7-ranged-preparation-card .evil-coc7-ranged-primary-button {
+  min-height: 2rem !important;
+  padding: 0.4rem 0.58rem !important;
+  font-size: 0.8rem !important;
+  line-height: 1.08 !important;
+}
+
+
+/* ========================================================================
+ * État défenseur compact — 1.4.1
+ * Le contexte "Défense" est implicite : on conserve uniquement le médaillon
+ * de réaction et son libellé utile (Esquive, Riposte, etc.).
+ * ===================================================================== */
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-state-icon.evil-coc7-reaction-art-icon {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+/* ========================================================================
+ * Icône du header défenseur — 1.4.1
+ * ===================================================================== */
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-header-icon.evil-coc7-reaction-art-icon {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
 }

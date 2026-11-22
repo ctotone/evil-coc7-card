@@ -2775,9 +2775,12 @@ function decorateMeleeTargetPreparationMessage(message, html, content) {
 
   layout.append(
     createMeleeDefenderHeader(context),
-    createMeleeDefenderContext(context),
-    createMeleeDefenderHero(context)
+    createMeleeDefenderContext(context)
   );
+
+  // La réaction choisie et sa valeur sont déjà reprises par l'action native
+  // finale (ex. "Lancer la riposte" + compétence + pourcentage). Ne pas
+  // répéter ces informations dans un grand bloc intermédiaire.
 
   const description = content.querySelector(":scope > .coc7-chat-description");
   if (description) {
@@ -2807,7 +2810,7 @@ function decorateMeleeTargetPreparationMessage(message, html, content) {
     // les classes de présentation CoC7 qui imposaient les demi-boutons.
     choiceArea.classList.remove("flexrow", "coc7-half-buttons");
     choiceArea.classList.add("evil-coc7-defender-choice-area");
-    decorateMeleeDefenderChoices(choiceArea);
+    decorateMeleeDefenderChoices(choiceArea, context);
   }
 
   const modifierSection = [...content.querySelectorAll(
@@ -3235,10 +3238,6 @@ function createMeleeDefenderHero(context) {
   );
   icon.classList.add("evil-coc7-defender-state-icon");
 
-  const label = document.createElement("div");
-  label.className = "evil-coc7-defender-state-label";
-  label.textContent = localizeModule("State.Defense");
-
   const detail = document.createElement("div");
   detail.className = "evil-coc7-defender-state-detail";
   detail.textContent =
@@ -3250,7 +3249,7 @@ function createMeleeDefenderHero(context) {
   ornament.className = "evil-coc7-verdict-ornament";
   ornament.setAttribute("aria-hidden", "true");
 
-  state.append(icon, label, detail, ornament);
+  state.append(icon, detail, ornament);
   hero.append(value, state);
   return hero;
 }
@@ -3291,7 +3290,7 @@ function getDefenderReactionAsset(reaction) {
   }[reaction] ?? null;
 }
 
-function decorateMeleeDefenderChoices(container) {
+function decorateMeleeDefenderChoices(container, context) {
   const buttons = [...container.querySelectorAll("button[data-action]")];
 
   for (const button of buttons) {
@@ -3313,11 +3312,15 @@ function decorateMeleeDefenderChoices(container) {
     const icon = createDefenderReactionIcon(reaction);
     icon.classList.add("evil-coc7-defender-choice-icon");
 
-    const label = document.createElement("span");
-    label.className = "evil-coc7-defender-choice-label";
-    label.textContent = getDefenderReactionLabel(reaction);
+    const reactionLabel = getDefenderReactionLabel(reaction);
+    const tooltipLabel =
+      reaction === "dodge" && context?.displaySkill?.value
+        ? `${reactionLabel} (${context.displaySkill.value}%)`
+        : reactionLabel;
 
-    button.replaceChildren(icon, label);
+    button.replaceChildren(icon);
+    button.dataset.tooltip = tooltipLabel;
+    button.setAttribute("aria-label", tooltipLabel);
 
     if (reaction === "fight-back" || reaction === "maneuver") {
       button.addEventListener("click", (event) => {
@@ -3817,8 +3820,6 @@ function decorateMeleeInitiatorMessage(message, html, content) {
     nativeTargetImage
   });
 
-  const hero = createMeleeHero(primarySkill);
-
   const controls = document.createElement("div");
   controls.className = "evil-coc7-melee-controls";
 
@@ -3867,7 +3868,7 @@ function decorateMeleeInitiatorMessage(message, html, content) {
     description.classList.add("evil-coc7-melee-description");
   }
 
-  layout.append(header, target, hero);
+  layout.append(header, target);
 
   if (description) {
     layout.append(description);
@@ -4000,47 +4001,6 @@ function createMeleeTargetRow({ targetName, nativeTargetImage }) {
   }
 
   return row;
-}
-
-function createMeleeHero(skill) {
-  const hero = document.createElement("div");
-  hero.className = "evil-coc7-melee-hero";
-
-  const value = document.createElement("div");
-  value.className = "evil-coc7-melee-hero-value";
-
-  const number = document.createElement("span");
-  number.className = "evil-coc7-melee-hero-number";
-  number.textContent = skill?.value || "—";
-
-  const percent = document.createElement("span");
-  percent.className = "evil-coc7-melee-hero-percent";
-  percent.textContent = skill?.value ? "%" : "";
-
-  value.append(number, percent);
-
-  const state = document.createElement("div");
-  state.className = "evil-coc7-melee-state";
-
-  const icon = document.createElement("div");
-  icon.className = "evil-coc7-melee-state-icon";
-
-  const crossedSwords = document.createElement("i");
-  crossedSwords.className = "game-icon game-icon-crossed-swords";
-  crossedSwords.setAttribute("aria-hidden", "true");
-  icon.append(crossedSwords);
-
-  const label = document.createElement("div");
-  label.className = "evil-coc7-melee-state-label";
-  label.textContent = localizeModule("State.Attack");
-
-  const ornament = document.createElement("div");
-  ornament.className = "evil-coc7-verdict-ornament";
-  ornament.setAttribute("aria-hidden", "true");
-
-  state.append(icon, label, ornament);
-  hero.append(value, state);
-  return hero;
 }
 
 function decorateMeleeAttackButton(button, skill) {

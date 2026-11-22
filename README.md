@@ -29,7 +29,7 @@ Il modifie uniquement la présentation visuelle des résultats dans le chat et n
 - **Foundry VTT minimum : v13**
 - **Foundry VTT vérifié : v14**
 - **Call of Cthulhu 7th Edition (CoC7) : branche 9.x**
-- **CoC7 minimum pour le module 1.4.0 : 9.0**
+- **CoC7 minimum pour la branche 1.4.x : 9.0**
 
 > À partir de la version **1.4.0**, le module suit la structure des cartes de chat de **CoC7 9.x**.
 

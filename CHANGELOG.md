@@ -1,5 +1,18 @@
-## 1.4.0
+## 1.4.1
 
+- Réduction générale de la hauteur des cartes de chat afin d’afficher davantage de jets sans défilement excessif.
+- Compactage des jets standards : header, portraits, zone de résultat, verdicts et espacements verticaux réduits.
+- Compactage des cartes de mêlée, de résolution et de dégâts, avec des boutons d’action plus courts et une hiérarchie visuelle conservée.
+- Préparation de mêlée attaquant simplifiée : suppression du bloc redondant « valeur + ATTAQUE » ; la ligne de cible et son portrait suffisent avant le lancement du jet.
+- Carte défenseur simplifiée : les quatre réactions sont regroupées sur une seule ligne d’icônes avec libellé au survol.
+- Le survol d’« Esquive » affiche également sa valeur réelle, par exemple « Esquive (40%) ».
+- Suppression de l’affichage anticipé d’une valeur d’Esquive avant qu’une réaction ne soit choisie.
+- Suppression du bloc central redondant « valeur + réaction » après sélection : la réaction, la compétence et le pourcentage sont déjà repris par l’action finale.
+- Suppression du libellé intermédiaire « DÉFENSE » et réduction des médaillons de réaction pour gagner de la hauteur.
+- Compactage des actions « Révéler le résultat », dégâts à distance et bouton principal de préparation du tir.
+- Aucun changement de règles, de jets, de permissions ou de logique de jeu CoC7.
+
+## 1.4.0
 - Mise à jour de compatibilité pour **Call of Cthulhu 7th Edition / CoC7 9.x**.
 - Adaptation des cartes de préparation de mêlée à la nouvelle structure HTML de CoC7 9.x.
 - Adaptation des cartes de préparation de tir à distance afin de distinguer correctement la ligne de cible du bloc de réglages.
