@@ -1,3 +1,5 @@
+![Aperçu des cartes de jet et de combat de Cartes CoC7 pour Foundry VTT](assets/foundry-coc7-card.webp)
+
 ## ☕ Support the Developer / Soutenir le développeur
 
 ### 🇬🇧 English

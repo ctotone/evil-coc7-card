@@ -1,4 +1,4 @@
-import { playCriticalSound, unlockCriticalAudio } from "./critical-audio.js";
+import { playCriticalSound } from "./critical-audio.js";
 
 const MODULE_ID = "evil-coc7-card";
 const CRITICAL_CARDS_SETTING = "criticalCardsEnabled";
@@ -79,8 +79,6 @@ async function testCriticalOverlay(state, detectState, { actor = game.user.chara
     ui.notifications.info(game.i18n.localize("EVILCOC7CARD.Settings.CriticalCardsDisabled"));
     return;
   }
-  void unlockCriticalAudio();
-
   const message = { id: Symbol("critical-overlay-test"), isContentVisible: true, speakerActor: actor };
   const content = document.createElement("div");
   content.innerHTML = '<div class="dice-roll"><div class="dice-result"><h4 class="dice-total"></h4></div></div>';
@@ -194,7 +192,7 @@ export function observeCriticalCard(message, content, load, { detectState, resol
         portrait: actor?.img || actor?.portrait || nativePortrait,
         fallbackPortrait: nativePortrait
       };
-      await showOverlay(message.id, event, isPreview, isSimulated);
+      await showOverlay(message.id, event, isPreview, isSimulated, canDisplay);
     }).catch((error) => {
       console.warn("evil-coc7-card | Impossible d'afficher l'animation.", error);
     });
@@ -274,7 +272,7 @@ async function waitForDice(messageId) {
   }
 }
 
-function showOverlay(messageId, { state, value, label, portrait, fallbackPortrait }, isPreview, isSimulated) {
+function showOverlay(messageId, { state, value, label, portrait, fallbackPortrait }, isPreview, isSimulated, canDisplay) {
   const dialog = document.createElement("dialog");
   dialog.className = `evil-coc7-critical-overlay evil-coc7-critical-overlay--${state}`;
   dialog.classList.add("evil-coc7-critical-overlay--pending");
@@ -287,6 +285,7 @@ function showOverlay(messageId, { state, value, label, portrait, fallbackPortrai
 
   const card = document.createElement("div");
   card.className = "evil-coc7-critical-event-card";
+  card.style.opacity = "0";
   const title = document.createElement("h2");
   title.textContent = titleText;
   const skill = document.createElement("p");
@@ -325,7 +324,7 @@ function showOverlay(messageId, { state, value, label, portrait, fallbackPortrai
 
   activeOverlay = { messageId, dialog, isSimulated };
   return new Promise((resolve) => {
-    let fadeSound;
+    let stopSound;
     let closeTimer;
     let closing = false;
     const closeWithFade = async () => {
@@ -333,8 +332,7 @@ function showOverlay(messageId, { state, value, label, portrait, fallbackPortrai
       closing = true;
       cancelAnimationFrame(frame);
       clearTimeout(closeTimer);
-      fadeSound?.();
-      fadeSound = undefined;
+      stopSound?.(120);
       try {
         const fade = dialog.animate([{ opacity: 1 }, { opacity: 0 }], {
           duration: 1100,
@@ -352,8 +350,9 @@ function showOverlay(messageId, { state, value, label, portrait, fallbackPortrai
     let frame = requestAnimationFrame(() => {
       frame = requestAnimationFrame(() => {
         dialog.classList.remove("evil-coc7-critical-overlay--pending");
+        animateCardEntrance(card, state, isPreview || isSimulated);
         try {
-          fadeSound = playCriticalSound(state);
+          stopSound = playCriticalSound(state, () => dialog.open && !closing && canDisplay());
         } catch (error) {
           console.warn("evil-coc7-card | Impossible de jouer le son de la carte.", error);
         }
@@ -368,10 +367,38 @@ function showOverlay(messageId, { state, value, label, portrait, fallbackPortrai
     dialog.addEventListener("close", () => {
       cancelAnimationFrame(frame);
       clearTimeout(closeTimer);
+      stopSound?.();
       activeOverlay = undefined;
       dialog.remove();
       resolve();
-      fadeSound?.();
     }, { once: true });
   });
+}
+
+function animateCardEntrance(card, state, forceMotion) {
+  const isFumble = state === "fumble";
+  const keyframes = [{ opacity: 0 }, { opacity: 1 }];
+  if (forceMotion || !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const verticalOffset = isFumble ? -0.7 : 0.6;
+    keyframes[0].transform = `translateY(${verticalOffset}rem) scale(0.62)`;
+    keyframes[1].transform = "translateY(0) scale(1)";
+    keyframes.splice(1, 0, {
+      offset: 0.32,
+      opacity: 0.82,
+      transform: `translateY(${verticalOffset * 0.6}rem) scale(0.68)`
+    });
+  }
+
+  try {
+    card.animate(keyframes, {
+      duration: isFumble ? 950 : 1100,
+      delay: 1000,
+      easing: "ease-in-out",
+      fill: "both"
+    });
+  } catch (error) {
+    console.warn("evil-coc7-card | Impossible d’animer l’apparition de la carte.", error);
+  } finally {
+    card.style.removeProperty("opacity");
+  }
 }

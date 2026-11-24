@@ -1,4 +1,8 @@
 {
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDice": "Dice So Nice: Hide dice for unrevealed melee attacks",
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDiceHint": "Hides the attack’s 3D dice from players who cannot yet see the result. The combat card and reactions remain available.",
+  "EVILCOC7CARD.Settings.CriticalSoundVolume": "Critical success and fumble sound volume",
+  "EVILCOC7CARD.Settings.CriticalSoundVolumeHint": "Card sound volume as a percentage. Foundry’s Environment channel also controls playback level.",
   "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Enable critical success and fumble cards",
   "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Critical success and fumble cards are disabled in this world.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Confirm response",

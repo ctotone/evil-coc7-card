@@ -1697,6 +1697,7 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
 
 .chat-message.evil-coc7-melee-defender-card
   .evil-coc7-defender-choice-button {
+  --evil-coc7-choice-rgb: var(--evil-coc7-accent-rgb);
   display: flex !important;
   flex-direction: column !important;
   gap: 0.2rem !important;
@@ -1706,10 +1707,12 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
   min-height: 3.35rem !important;
   margin: 0 !important;
   padding: 0.38rem 0.28rem !important;
-  border: 1px solid rgba(var(--evil-coc7-accent-rgb), 0.28) !important;
+  border: 1px solid rgba(var(--evil-coc7-choice-rgb), 0.44) !important;
   border-radius: 5px !important;
-  background: rgba(0, 0, 0, 0.18) !important;
-  box-shadow: none !important;
+  background:
+    linear-gradient(180deg, rgba(var(--evil-coc7-choice-rgb), 0.26), rgba(var(--evil-coc7-choice-rgb), 0.09)),
+    #15130f !important;
+  box-shadow: inset 0 1px rgba(var(--evil-coc7-choice-rgb), 0.14) !important;
   color: #c8c1b5 !important;
   text-align: center !important;
   text-shadow: none !important;
@@ -1717,19 +1720,42 @@ html[lang]:not([lang^="fr"]) .evil-coc7-defender-choice-area::before {
 }
 
 .chat-message.evil-coc7-melee-defender-card
-  .evil-coc7-defender-choice-button:hover,
+  .evil-coc7-defender-choice-button.evil-coc7-choice-dodge {
+  --evil-coc7-choice-rgb: 77, 176, 218;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button.evil-coc7-choice-no-response {
+  --evil-coc7-choice-rgb: 195, 167, 101;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button.evil-coc7-choice-fight-back {
+  --evil-coc7-choice-rgb: 217, 96, 82;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button.evil-coc7-choice-maneuver {
+  --evil-coc7-choice-rgb: 172, 124, 218;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button:hover:not(:disabled),
 .chat-message.evil-coc7-melee-defender-card
   .evil-coc7-defender-choice-button:focus-visible,
 .chat-message.evil-coc7-melee-defender-card
   .evil-coc7-defender-choice-button.switched-on {
-  border-color: rgba(var(--evil-coc7-accent-rgb), 0.74) !important;
+  border-color: rgba(var(--evil-coc7-choice-rgb), 0.84) !important;
   background:
-    linear-gradient(
-      180deg,
-      rgba(var(--evil-coc7-accent-rgb), 0.13),
-      rgba(var(--evil-coc7-accent-rgb), 0.045)
-    ) !important;
+    linear-gradient(180deg, rgba(var(--evil-coc7-choice-rgb), 0.40), rgba(var(--evil-coc7-choice-rgb), 0.19)),
+    #15130f !important;
   color: #eadfbe !important;
+}
+
+.chat-message.evil-coc7-melee-defender-card
+  .evil-coc7-defender-choice-button:focus-visible {
+  outline: 2px solid rgba(var(--evil-coc7-choice-rgb), 0.84);
+  outline-offset: 1px;
 }
 
 .chat-message.evil-coc7-melee-defender-card
@@ -11306,7 +11332,6 @@ html[lang^="fr"]
   --event-heading: #5bd529;
   --event-dark: #152212;
   --event-art: url("../assets/critique_roll.webp");
-  --event-entry: evil-coc7-critical-enter 680ms cubic-bezier(0.18, 0.72, 0.28, 1) both;
   position: fixed;
   inset: 0;
   display: grid;
@@ -11339,7 +11364,6 @@ html[lang^="fr"]
   --event-heading: #ff4741;
   --event-dark: #300f15;
   --event-art: url("../assets/maladresse_roll.webp");
-  --event-entry: evil-coc7-fumble-enter 420ms 45ms ease-out both;
 }
 
 .evil-coc7-critical-overlay:not([open]) {
@@ -11356,7 +11380,7 @@ html[lang^="fr"]
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(ellipse at center, var(--event-dark), #090909ed);
-  animation: evil-coc7-event-backdrop 300ms ease-out both;
+  animation: evil-coc7-event-backdrop 240ms ease-out both;
 }
 
 /* The effects sit under the card and play once when the dialog opens. */
@@ -11436,7 +11460,6 @@ html[lang^="fr"]
   border-radius: 5%;
   background: var(--event-dark) var(--event-art) center / contain no-repeat;
   box-shadow: 0 0 2rem color-mix(in srgb, var(--event-color) 38%, transparent);
-  animation: var(--event-entry);
   text-align: center;
   font-family: Georgia, "Times New Roman", serif;
   overflow: hidden;
@@ -11512,20 +11535,6 @@ html[lang^="fr"]
   from { opacity: 0; }
 }
 
-@keyframes evil-coc7-critical-enter {
-  from { opacity: 0; transform: translateY(0.8rem) scale(0.91); }
-  72% { opacity: 1; }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes evil-coc7-fumble-enter {
-  from { opacity: 0; transform: translateY(-1.1rem) scale(1.07); }
-  38% { opacity: 1; transform: translate(0.18rem, 0.1rem) scale(0.985); }
-  61% { transform: translateX(-0.15rem) scale(1.008); }
-  82% { transform: translateX(0.05rem); }
-  to { opacity: 1; transform: none; }
-}
-
 @keyframes evil-coc7-critical-halo {
   from { opacity: 0; transform: scale(0.65); }
   36% { opacity: 0.85; }
@@ -11568,14 +11577,12 @@ html[lang^="fr"]
 .evil-coc7-critical-overlay--pending::before,
 .evil-coc7-critical-overlay--pending::after,
 .evil-coc7-critical-overlay--pending > .evil-coc7-critical-background,
-.evil-coc7-critical-overlay--pending > .evil-coc7-critical-ambience,
-.evil-coc7-critical-overlay--pending > .evil-coc7-critical-event-card {
+.evil-coc7-critical-overlay--pending > .evil-coc7-critical-ambience {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .evil-coc7-critical-overlay:not(.evil-coc7-critical-overlay--preview) > .evil-coc7-critical-background,
-  .evil-coc7-critical-overlay:not(.evil-coc7-critical-overlay--preview) > .evil-coc7-critical-event-card {
+  .evil-coc7-critical-overlay:not(.evil-coc7-critical-overlay--preview) > .evil-coc7-critical-background {
     animation: none;
   }
 

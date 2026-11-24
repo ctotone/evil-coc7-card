@@ -1,4 +1,8 @@
 {
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDice": "Dice So Nice : masquer les dés des attaques de mêlée non révélées",
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDiceHint": "Masque les dés 3D de l’attaque aux joueurs qui ne peuvent pas encore voir son résultat. La carte de combat et les réactions restent accessibles.",
+  "EVILCOC7CARD.Settings.CriticalSoundVolume": "Volume des sons de réussite et d’échec critique",
+  "EVILCOC7CARD.Settings.CriticalSoundVolumeHint": "Volume des effets des cartes en pourcentage. Le canal Environnement de Foundry règle aussi le niveau d’écoute.",
   "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Activer les cartes de réussite et d’échec critique",
   "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Les cartes de réussite et d’échec critique sont désactivées dans ce monde.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Confirmer la réponse",

@@ -1,4 +1,8 @@
 {
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDice": "Dice So Nice: Nascondi i dadi degli attacchi in mischia non rivelati",
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDiceHint": "Nasconde i dadi 3D dell’attacco a chi non può ancora vedere il risultato. La carta di combattimento e le reazioni restano disponibili.",
+  "EVILCOC7CARD.Settings.CriticalSoundVolume": "Volume dei suoni di successo e fallimento critico",
+  "EVILCOC7CARD.Settings.CriticalSoundVolumeHint": "Volume degli effetti delle carte in percentuale. Anche il canale Ambiente di Foundry regola il livello di riproduzione.",
   "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Attiva le carte di successo critico e fallimento critico",
   "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Le carte di successo critico e fallimento critico sono disattivate in questo mondo.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Conferma risposta",

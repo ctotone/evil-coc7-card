@@ -1,3 +1,19 @@
+## 1.5.1
+
+### Combat de mêlée avec Dice So Nice
+
+- **Correctif temporaire de Cartes CoC7.** Quand le MJ lance une attaque de mêlée en mode Jet public et que CoC7 masque encore le résultat, Dice So Nice peut afficher les faces des dés 3D aux joueurs avant la révélation. Le module empêche cet affichage chez les joueurs qui ne peuvent pas encore lire le résultat dans le chat.
+- Le MJ et les joueurs autorisés par CoC7 continuent de voir les dés. Le défenseur voit la carte d’attaque avec son résultat masqué et conserve l’accès à ses réactions. Les dés de la défense s’affichent normalement.
+- Le MJ peut désactiver le correctif dans les paramètres du module via **Dice So Nice : masquer les dés des attaques de mêlée non révélées**. Cette option est cochée par défaut.
+
+Une proposition de correction a été transmise sur le dépôt du système CoC7. **Le correctif sera retiré de Cartes CoC7 dès qu’une version du système CoC7 intégrant la correction sera disponible.**
+
+### Cartes critiques et réactions
+
+- Nouveaux sons pour la réussite critique et la maladresse, joués sur le canal **Environnement** de Foundry. Leur volume se règle dans les paramètres du module et démarre à **20 %**.
+- Le fond coloré apparaît une seconde avant la carte critique, qui se dévoile ensuite avec un fondu et un zoom avant.
+- Les boutons de réaction de mêlée ont un fond et une bordure assortis à leur pictogramme. Les quatre choix restent regroupés sur une seule ligne.
+
 ## 1.5.0
 
 - Ajout de cartes plein écran animées et sonores pour les réussites critiques et les maladresses de CoC7.

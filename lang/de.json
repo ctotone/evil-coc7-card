@@ -1,4 +1,8 @@
 {
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDice": "Dice So Nice: Würfel noch nicht aufgedeckter Nahkampfangriffe ausblenden",
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDiceHint": "Spieler, die das Ergebnis noch nicht sehen dürfen, sehen die 3D-Würfel des Angriffs nicht. Die Kampfkarte und die Reaktionen bleiben verfügbar.",
+  "EVILCOC7CARD.Settings.CriticalSoundVolume": "Lautstärke für kritische Erfolge und Patzer",
+  "EVILCOC7CARD.Settings.CriticalSoundVolumeHint": "Lautstärke der Karteneffekte in Prozent. Der Foundry-Kanal für Umgebungsgeräusche regelt zusätzlich die Wiedergabe.",
   "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Karten für kritische Erfolge und Patzer aktivieren",
   "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Die Karten für kritische Erfolge und Patzer sind in dieser Welt deaktiviert.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Reaktion bestätigen",

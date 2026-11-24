@@ -1,4 +1,8 @@
 {
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDice": "Dice So Nice: Ocultar los dados de ataques cuerpo a cuerpo sin revelar",
+  "EVILCOC7CARD.Settings.HideConcealedMeleeDiceHint": "Oculta los dados 3D del ataque a quienes aún no pueden ver el resultado. La carta de combate y las reacciones siguen disponibles.",
+  "EVILCOC7CARD.Settings.CriticalSoundVolume": "Volumen de los sonidos de éxito crítico y pifia",
+  "EVILCOC7CARD.Settings.CriticalSoundVolumeHint": "Volumen de los efectos de las cartas en porcentaje. El canal de ambiente de Foundry también controla el nivel de reproducción.",
   "EVILCOC7CARD.Settings.CriticalCardsEnabled": "Activar las cartas de éxito crítico y pifia",
   "EVILCOC7CARD.Settings.CriticalCardsDisabled": "Las cartas de éxito crítico y pifia están desactivadas en este mundo.",
   "EVILCOC7CARD.Action.ConfirmResponse": "Confirmar respuesta",

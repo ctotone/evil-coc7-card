@@ -1,4 +1,5 @@
 import { observeCriticalCard, registerCriticalOverlay } from "./critical-overlay.js";
+import "./dice-so-nice-compat.js";
 
 const MODULE_ID = "evil-coc7-card";
 const STANDARD_CARD_TYPE = "CoC7Check";
